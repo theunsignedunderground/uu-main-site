@@ -1,0 +1,9 @@
+[
+  {
+    "id": "demo-artist-1",
+    "name": "Dotson",
+    "city": "Boerne",
+    "state": "TX",
+    "genres": ["Country", "Rock"]
+  }
+]

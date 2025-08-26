@@ -1,14 +1,8 @@
-{
-  "name": "uu-main-site",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start -p $PORT"
-  },
-  "dependencies": {
-    "next": "14.2.5",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
-  }
+export default function Home() {
+  return (
+    <main style={{padding: "2rem", fontFamily: "system-ui, Arial, sans-serif"}}>
+      <h1>The Unsigned Underground</h1>
+      <p>Skeleton is live. Onboarding at <a href="/onboarding">/onboarding</a>.</p>
+    </main>
+  );
 }

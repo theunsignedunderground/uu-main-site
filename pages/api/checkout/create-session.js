@@ -1,38 +1,20 @@
-// Minimal Stripe Checkout creator: returns a URL to redirect the user
-export default async function handler(req, res) {
-  if (req.method !== "GET") return res.status(405).end();
+const Stripe = require('stripe');
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-  const stripeSecret = process.env.STRIPE_SECRET_KEY;
-  const priceRecurring = process.env.STRIPE_PRICE_RECURRING;
-  const priceSetup = process.env.STRIPE_PRICE_SETUP;
-  const siteUrl = process.env.SITE_URL || `https://${req.headers.host}`;
-
-  if (!stripeSecret || !priceRecurring || !priceSetup) {
-    return res.status(500).json({ error: "Stripe env vars missing" });
-  }
-
-  const Stripe = (await import("stripe")).default;
-  const stripe = new Stripe(stripeSecret, { apiVersion: "2024-06-20" });
-
+module.exports = async function handler(req, res) {
+  if (req.method !== 'POST') return res.status(405).end('Method Not Allowed');
   try {
     const session = await stripe.checkout.sessions.create({
-      mode: "subscription",
-      line_items: [
-        { price: priceRecurring, quantity: 1 },
-        { price: priceSetup, quantity: 1 }
+      mode: 'payment',
+      line_items: req.body.line_items ?? [
+        { price: process.env.STRIPE_TEST_PRICE_ID, quantity: 1 },
       ],
-      success_url: `${siteUrl}/onboarding?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${siteUrl}/?canceled=1`,
-      // expand to get customer email on webhook easily
-      customer_creation: "always",
-      allow_promotion_codes: true,
+      success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.headers.origin}/cancel`,
     });
-
-    // Redirect the browser to Stripe-hosted checkout
-    res.writeHead(303, { Location: session.url });
-    res.end();
-  } catch (e) {
-    console.error("Stripe create-session error:", e);
-    res.status(500).json({ error: "Failed to create checkout session" });
+    res.status(200).json({ id: session.id, url: session.url });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
-}
+};

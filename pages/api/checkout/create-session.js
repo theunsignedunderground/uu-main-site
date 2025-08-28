@@ -25,7 +25,7 @@ export default async function handler(req, res) {
       [{ price: process.env.STRIPE_TEST_PRICE_ID, quantity: 1 }];
 
     const session = await stripe.checkout.sessions.create({
-      mode: 'payment',
+      mode: 'subscription',
       line_items,
       success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.origin}/cancel`,

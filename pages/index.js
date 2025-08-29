@@ -44,6 +44,40 @@ export default function Home() {
   </div>
 </section>
 
+{/* What Unsigned Underground Does Section */}
+<section style={section}>
+  <div style={container}>
+    <h2 style={h2}>The Underground Advantage</h2>
+    <p style={subheader}>
+      Marketing yourself and your music can feel overwhelming — but it doesn’t have to be.
+    </p>
+    <div style={{maxWidth:800, margin:"0 auto", lineHeight:1.7, color:"#444", fontSize:17}}>
+      <p style={{marginBottom:16}}>
+        The Unsigned Underground builds your professional artist site and PR package for you, 
+        at a low one-time cost — so you can focus on creating music instead of wrestling with marketing.
+      </p>
+      <p style={{marginBottom:16}}>
+        This isn’t just another website. Your City Showcase Site is designed from the ground up 
+        to be SEO-friendly and targeted, helping the right audience find you — fans in your 
+        community and industry contacts who matter most.
+      </p>
+      <p style={{marginBottom:16}}>
+        Once it’s live, you have full control — it’s easy to edit, update, and maintain on your own, 
+        so your music and story always stay current.
+      </p>
+      <p style={{marginBottom:24}}>
+        Other platforms lock important features behind expensive paywalls or operate on 
+        pay-to-play models that drain your budget. The Unsigned Underground is different: 
+        simple, affordable, and focused on building your community and sharpening your brand.
+      </p>
+      <p style={{fontWeight:600, color:"#222", fontSize:18, textAlign:"center"}}>
+        When you join The Underground, we can help launch you forward in ways the industry will never see coming — 
+        the smartest way to take control of your career and get discovered.
+      </p>
+    </div>
+  </div>
+</section>
+
       {/* Features / Deliverables */}
      <section id="features" style={section}>
   <div style={container}>
@@ -345,5 +379,15 @@ const missionHeader = {
   textAlign: "center",
   textDecoration: "underline",
   marginBottom: 24
+};
+
+const subheader = {
+  textAlign: "center",
+  maxWidth: 700,
+  margin: "0 auto 28px",
+  fontSize: 18,
+  color: "#666",
+  fontStyle: "italic",
+  lineHeight: 1.5
 };
 

@@ -33,6 +33,16 @@ export default function Home() {
           </div>
         </div>
       </section>
+ 
+  {/* Mission Statement */}
+<section style={altSection}>
+  <div style={container}>
+    <h2 style={missionHeader}>The Underground Mission</h2>
+    <p style={{maxWidth:800, margin:"0 auto", lineHeight:1.7, color:"#444", fontSize:17}}>
+      The Unsigned Underground gives independent artists the tools, exposure, and credibility they deserve—without waiting for a label or overspending on PR. We help you build your community first, starting locally and growing city by city. With proven strategies, industry-level presentation, and a platform built for independents, we make it affordable to stand out, grow your fanbase, and get discovered on your own terms.
+    </p>
+  </div>
+</section>
 
       {/* Features / Deliverables */}
      <section id="features" style={section}>
@@ -328,5 +338,12 @@ const includedDesc = {
   margin: 0,
   color: "#555",
   lineHeight: 1.6
+};
+
+const missionHeader = {
+  ...h2,
+  textAlign: "center",
+  textDecoration: "underline",
+  marginBottom: 24
 };
 

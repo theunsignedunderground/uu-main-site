@@ -165,22 +165,35 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FAQ (public, concise) */}
-      <section id="faq" style={altSection}>
-        <div style={container}>
-          <h2 style={h2}>FAQ</h2>
-          <div style={faqGrid}>
-            <FAQ q="How does this work?"
-                 a="You onboard once, we build your City Showcase Site and publish your press package, then we amplify. You focus on your music; we drive discovery and help you grow locally first." />
-            <FAQ q="What’s included?"
-                 a="City Showcase Site (EPK website), premium feature article, press release, interview, Artist Manager access, and amplification across our ecosystem." />
-            <FAQ q="What is SEO and how does it help?"
-                 a="We structure your Showcase content and metadata so fans and industry can find you when they search — especially in your city and genre." />
-            <FAQ q="Can The Unsigned Underground help me release my music?"
-                 a="Yes. We provide a Music Distribution Quick Start guide and tools that make pre-release setup faster and cleaner." />
-          </div>
-        </div>
-      </section>
+     {/* Mini FAQ (accordion) */}
+<section id="faq" style={altSection}>
+  <div style={container}>
+    <h2 style={h2}>FAQ</h2>
+
+    <div style={accordionWrap}>
+      <AccordionItem
+        q="How fast can my page go live?"
+        a="Once you complete onboarding and provide your assets, we typically deliver your first City Showcase draft in a few business days. Press items (feature article, press release) follow shortly after. Timing depends on your materials and revisions."
+      />
+      <AccordionItem
+        q="Do I keep ownership of my music and content?"
+        a="Yes. You retain full ownership. You simply grant us permission to display and promote your materials on your City Showcase Site and across our ecosystem."
+      />
+      <AccordionItem
+        q="Can I update my site after it’s live?"
+        a="Yes. You’ll be able to edit and update your City Showcase Site easily so your fans and industry contacts always see your latest music, shows, and news."
+      />
+      <AccordionItem
+        q="Are there ongoing costs?"
+        a="There’s a one-time build/startup fee for your Showcase and PR package. Optional membership plans (monthly/annual) cover ongoing hosting, updates, and promotion. You’ll always see current options clearly at checkout."
+      />
+    </div>
+
+    <div style={{textAlign:"center", marginTop:16}}>
+      <a href="/faq" style={{color:"#111", textDecoration:"underline"}}>View all FAQs</a>
+    </div>
+  </div>
+</section>
 
       {/* Final CTA */}
       <section style={section}>
@@ -235,6 +248,29 @@ function Step({ num, title, text }) {
         <div style={stepTitle}>{title}</div>
         <p style={stepText}>{text}</p>
       </div>
+    </div>
+  );
+}
+import { useState } from "react";
+
+function AccordionItem({ q, a }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={accordionItem}>
+      <button
+        onClick={() => setOpen(!open)}
+        style={accordionBtn}
+        aria-expanded={open}
+        aria-controls={q.replace(/\s+/g, "-").toLowerCase()}
+      >
+        <span>{q}</span>
+        <span style={{fontWeight:700}}>{open ? "–" : "+"}</span>
+      </button>
+      {open && (
+        <div id={q.replace(/\s+/g, "-").toLowerCase()} style={accordionPanel}>
+          {a}
+        </div>
+      )}
     </div>
   );
 }
@@ -479,3 +515,35 @@ const stepText = {
   color: "#555",
   lineHeight: 1.5
 };
+const accordionWrap = {
+  maxWidth: 900,
+  margin: "0 auto",
+  display: "grid",
+  gap: 10
+};
+
+const accordionItem = {
+  border: "1px solid #eaeaea",
+  borderRadius: 10,
+  background: "#fff",
+};
+
+const accordionBtn = {
+  width: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  padding: "14px 16px",
+  background: "transparent",
+  border: "none",
+  fontSize: 16,
+  textAlign: "left",
+  cursor: "pointer"
+};
+
+const accordionPanel = {
+  padding: "0 16px 14px 16px",
+  color: "#555",
+  lineHeight: 1.6
+};
+

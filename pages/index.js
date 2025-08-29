@@ -1,56 +1,276 @@
-import FAQ from "../components/FAQ";
-
 export default function Home() {
-  return (
-    <main style={{padding: "2rem", fontFamily: "system-ui, Arial, sans-serif", maxWidth: 1000, margin: "0 auto"}}>
-      {/* Hero */}
-      <header style={{padding: "18px 0 8px 0"}}>
-        <h1 style={{fontSize: 36, margin: 0}}>The Unsigned Underground</h1>
-        <p style={{margin: "8px 0 0 0", color: "#444"}}>
-          Your success begins by building your community. Start local, then expand city by city with UU.
-        </p>
-        <div style={{marginTop: 16, display: "flex", gap: 12}}>
-          <a href="/onboarding" style={btn}>Get Started</a>
-          <a href="/dashboard" style={btnSecondary}>Artist Dashboard</a>
-        </div>
-      </header>
+  async function startCheckout() {
+    try {
+      const res = await fetch('/api/checkout/create-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+        // no body needed — backend will use STRIPE_TEST_PRICE_ID if present
+      });
+      const data = await res.json();
+      if (data?.url) {
+        window.location.href = data.url; // Redirect to Stripe Checkout
+      } else {
+        alert(data?.error || 'Checkout unavailable.');
+      }
+    } catch (err) {
+      console.error('startCheckout error:', err);
+      alert('Network error. Please try again.');
+    }
+  }
 
-      {/* Value props */}
-      <section style={{display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 14, marginTop: 28}}>
-        <div style={card}><strong>City Showcase Site</strong><p style={p}>A clean, fast, SEO-ready home for your music.</p></div>
-        <div style={card}><strong>Press Release + Article</strong><p style={p}>Professionally written to get you seen and heard.</p></div>
-        <div style={card}><strong>Texas Genre Blogs</strong><p style={p}>State-level exposure to kickstart local growth.</p></div>
-        <div style={card}><strong>Artist Manager</strong><p style={p}>Clear guidance (Phase 1: static Q&A) right in your dashboard.</p></div>
+  return (
+    <main style={page}>
+      {/* Hero */}
+      <section style={hero}>
+        <div style={container}>
+          <h1 style={heroTitle}>The Unsigned Underground</h1>
+          <p style={heroSubtitle}>
+            Real PR. Real Exposure. Real Fans. Your success all begins by <strong>building your community</strong> — we’ll help you grow from local hero to national act.
+          </p>
+          <div style={ctaRow}>
+            <a href="#features" style={primaryBtn}>See What You Get</a>
+            <button onClick={startCheckout} style={secondaryBtn}>Get Started</button>
+          </div>
+        </div>
       </section>
 
-      {/* FAQ */}
-      <FAQ />
+      {/* Features / Deliverables */}
+      <section id="features" style={section}>
+        <div style={container}>
+          <h2 style={h2}>What You Get</h2>
+          <div style={grid}>
+            <Feature
+              title="City Showcase Site"
+              text="A custom-built hub website with your full EPK and more — press assets, music, videos, calendar, links — all in one place."
+            />
+            <Feature
+              title="Feature Article"
+              text="A premium write-up about your story and sound, professionally written and published in a genre-specific music magazine."
+            />
+            <Feature
+              title="Press Release"
+              text="Crafted and distributed to industry and media — a credible, professional announcement that helps you break through."
+            />
+            <Feature
+              title="Artist Interview"
+              text="A guided interview conducted by our team and published to showcase your voice, personality, and creative vision."
+            />
+            <Feature
+              title="Artist Manager (Members-Only)"
+              text="Actionable guidance, tools, and trend insights — from local growth to national momentum, independence-first."
+            />
+            <Feature
+              title="Social & Discovery Boost"
+              text="Amplification across our channels and ecosystem — including placements that help new fans find you faster."
+            />
+          </div>
+
+          {/* Low one-time price line (standalone) */}
+          <p style={oneLinePrice}>All this included in one low, one-time price.</p>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section id="how" style={altSection}>
+        <div style={container}>
+          <h2 style={h2}>How It Works</h2>
+          <ol style={steps}>
+            <li><strong>Sign up & onboard.</strong> Share your info, assets, and goals.</li>
+            <li><strong>We build & publish.</strong> Your City Showcase Site goes live; feature article, interview, and press release roll out.</li>
+            <li><strong>We amplify.</strong> We promote through our ecosystem to spark fan growth where you live.</li>
+            <li><strong>You grow.</strong> Build your community locally, then expand city by city with our playbook.</li>
+          </ol>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="pricing" style={section}>
+        <div style={container}>
+          <h2 style={h2}>Pricing</h2>
+          <div style={priceCard}>
+            <div>
+              <h3 style={{margin:0, fontSize:24}}>Annual UU Package</h3>
+              <p style={{margin:"8px 0 16px 0", color:"#666"}}>City Showcase Site, press package, and Artist Manager access.</p>
+              <div style={{fontSize:36, fontWeight:700}}>$349.99</div>
+            </div>
+            <button onClick={startCheckout} style={primaryBtnWide}>Start Checkout</button>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ (public, concise) */}
+      <section id="faq" style={altSection}>
+        <div style={container}>
+          <h2 style={h2}>FAQ</h2>
+          <div style={faqGrid}>
+            <FAQ q="How does this work?"
+                 a="You onboard once, we build your City Showcase Site and publish your press package, then we amplify. You focus on your music; we drive discovery and help you grow locally first." />
+            <FAQ q="What’s included?"
+                 a="City Showcase Site (EPK website), premium feature article, press release, interview, Artist Manager access, and amplification across our ecosystem." />
+            <FAQ q="What is SEO and how does it help?"
+                 a="We structure your Showcase content and metadata so fans and industry can find you when they search — especially in your city and genre." />
+            <FAQ q="Can The Unsigned Underground help me release my music?"
+                 a="Yes. We provide a Music Distribution Quick Start guide and tools that make pre-release setup faster and cleaner." />
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section style={section}>
+        <div style={container}>
+          <div style={finalCta}>
+            <h2 style={{margin:"0 0 8px 0"}}>Ready to take the next step?</h2>
+            <p style={{margin:"0 0 16px 0", color:"#666"}}>Join The Underground and start building your community today.</p>
+            <button onClick={startCheckout} style={primaryBtn}>Join The Underground</button>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
 
-const btn = {
-  display: "inline-block",
-  padding: "10px 16px",
-  background: "#111",
-  color: "#fff",
-  textDecoration: "none",
-  borderRadius: 8,
-  border: "1px solid #111"
+/* ---------- Small presentational components ---------- */
+
+function Feature({ title, text }) {
+  return (
+    <div style={card}>
+      <h3 style={{margin:"0 0 8px 0", fontSize:20}}>{title}</h3>
+      <p style={{margin:0, color:"#555"}}>{text}</p>
+    </div>
+  );
+}
+
+function FAQ({ q, a }) {
+  return (
+    <div style={faqItem}>
+      <h4 style={{margin:"0 0 6px 0"}}>{q}</h4>
+      <p style={{margin:0, color:"#555"}}>{a}</p>
+    </div>
+  );
+}
+
+/* ---------- Styles ---------- */
+
+const page = {
+  fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif",
+  color: "#111",
+  background: "#fff"
 };
 
-const btnSecondary = {
-  ...btn,
-  background: "#fafafa",
-  color: "#111",
-  border: "1px solid #ddd"
+const container = {
+  maxWidth: 1100,
+  margin: "0 auto",
+  padding: "0 20px"
+};
+
+const hero = {
+  background: "linear-gradient(180deg, #111 0%, #1a1a1a 100%)",
+  color: "#fff",
+  padding: "80px 0 64px",
+  textAlign: "center",
+  borderBottom: "1px solid #222"
+};
+
+const heroTitle = {
+  margin: 0,
+  fontSize: 44,
+  lineHeight: 1.1,
+  letterSpacing: "-0.5px"
+};
+
+const heroSubtitle = {
+  margin: "12px auto 20px",
+  maxWidth: 800,
+  fontSize: 18,
+  color: "rgba(255,255,255,0.85)"
+};
+
+const ctaRow = { display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" };
+
+const primaryBtn = {
+  display: "inline-block",
+  padding: "12px 16px",
+  borderRadius: 10,
+  background: "#e11d2e", // outlaw red accent
+  color: "#fff",
+  border: "1px solid #e11d2e",
+  textDecoration: "none",
+  cursor: "pointer",
+  fontWeight: 600
+};
+
+const primaryBtnWide = { ...primaryBtn, width: "100%", textAlign: "center", padding: "14px 16px", fontSize: 18 };
+
+const secondaryBtn = {
+  display: "inline-block",
+  padding: "12px 16px",
+  borderRadius: 10,
+  background: "transparent",
+  color: "#fff",
+  border: "1px solid #fff",
+  textDecoration: "none",
+  cursor: "pointer",
+  fontWeight: 600
+};
+
+const section = { padding: "64px 0" };
+const altSection = { ...section, background: "#fafafa", borderTop: "1px solid #eee", borderBottom: "1px solid #eee" };
+const h2 = { margin: "0 0 20px 0", fontSize: 30, letterSpacing: "-0.3px" };
+
+const grid = {
+  display: "grid",
+  gap: 16,
+  gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))"
 };
 
 const card = {
-  border: "1px solid #e5e5e5",
+  border: "1px solid #eee",
   borderRadius: 12,
-  background: "#fafafa",
-  padding: 14
+  padding: 16,
+  background: "#fff",
+  boxShadow: "0 1px 2px rgba(0,0,0,0.03)"
 };
 
-const p = { margin: "6px 0 0 0", color: "#555" };
+const oneLinePrice = {
+  marginTop: 20,
+  paddingTop: 10,
+  borderTop: "1px dashed #e5e5e5",
+  textAlign: "center",
+  fontWeight: 600
+};
+
+const steps = {
+  margin: 0,
+  padding: "0 18px",
+  lineHeight: 1.7,
+  color: "#444"
+};
+
+const priceCard = {
+  ...card,
+  display: "grid",
+  gap: 16,
+  maxWidth: 520,
+  margin: "0 auto"
+};
+
+const faqGrid = {
+  display: "grid",
+  gap: 16,
+  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))"
+};
+
+const faqItem = {
+  border: "1px solid #eee",
+  borderRadius: 12,
+  padding: 16,
+  background: "#fff"
+};
+
+const finalCta = {
+  ...card,
+  textAlign: "center",
+  background: "#111",
+  color: "#fff",
+  border: "1px solid #111"
+};

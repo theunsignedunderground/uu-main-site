@@ -470,15 +470,3 @@ const stepText = {
   color: "#555",
   lineHeight: 1.5
 };
-
-const subheader = {
-  textAlign: "center",
-  maxWidth: 700,
-  margin: "0 auto 28px",
-  fontSize: 18,
-  color: "#666",
-  fontStyle: "italic", // 👈 italic styling
-  lineHeight: 1.5
-};
-
-

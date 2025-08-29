@@ -136,13 +136,10 @@ export default function Home() {
   </div>
 </section>
 
-     {/* Roadmap Section */}
-<section id="roadmap" style={section}>
+    <section id="roadmap" style={section}>
   <div style={container}>
     <h2 style={h2}>The Roadmap</h2>
-    <p style={subheader}>
-      From zero to hero — your journey in five simple steps.
-    </p>
+    <p style={subheader}>From zero to hero — your journey in five simple steps.</p>
     <div style={stepsGrid}>
       <Step num="1" title="Sign Up & Onboard" text="Provide your info, music, and materials in one simple form — it only takes minutes." />
       <Step num="2" title="We Build" text="Our team creates your City Showcase Site and PR package — all done for you." />
@@ -225,6 +222,18 @@ function IncludedItem({ title, desc }) {
       <div>
         <div style={includedTitle}>{title}</div>
         <p style={includedDesc}>{desc}</p>
+      </div>
+    </div>
+  );
+}
+
+function Step({ num, title, text }) {
+  return (
+    <div style={stepItem}>
+      <div style={stepNum}>{num}</div>
+      <div>
+        <div style={stepTitle}>{title}</div>
+        <p style={stepText}>{text}</p>
       </div>
     </div>
   );

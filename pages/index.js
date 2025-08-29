@@ -120,6 +120,22 @@ export default function Home() {
   </div>
 </section>
 
+      {/* Media Showcase Section */}
+<section style={altSection}>
+  <div style={container}>
+    <h2 style={h2}>See The Underground In Action</h2>
+    <p style={{maxWidth:800, margin:"0 auto 32px", textAlign:"center", color:"#555", fontSize:16}}>
+      Your City Showcase Site, press features, and online magazine posts are designed to look professional, 
+      stand out, and grab attention. Here’s a glimpse of what your presence in The Underground could look like.
+    </p>
+    <div style={mediaGrid}>
+      <div style={mediaBlock}>[ Showcase Site Image ]</div>
+      <div style={mediaBlock}>[ EPK / Feature Article ]</div>
+      <div style={mediaBlock}>[ Online Magazine Post ]</div>
+    </div>
+  </div>
+</section>
+
       <section id="how" style={altSection}>
         <div style={container}>
           <h2 style={h2}>How It Works</h2>
@@ -390,4 +406,24 @@ const subheader = {
   fontStyle: "italic",
   lineHeight: 1.5
 };
+
+const mediaGrid = {
+  display: "grid",
+  gap: 20,
+  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))"
+};
+
+const mediaBlock = {
+  background: "#f0f0f0",
+  border: "1px solid #ddd",
+  borderRadius: 12,
+  height: 200,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  color: "#999",
+  fontSize: 16,
+  fontStyle: "italic"
+};
+
 

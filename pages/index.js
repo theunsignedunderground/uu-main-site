@@ -136,17 +136,22 @@ export default function Home() {
   </div>
 </section>
 
-      <section id="how" style={altSection}>
-        <div style={container}>
-          <h2 style={h2}>How It Works</h2>
-          <ol style={steps}>
-            <li><strong>Sign up & onboard.</strong> Share your info, assets, and goals.</li>
-            <li><strong>We build & publish.</strong> Your City Showcase Site goes live; feature article, interview, and press release roll out.</li>
-            <li><strong>We amplify.</strong> We promote through our ecosystem to spark fan growth where you live.</li>
-            <li><strong>You grow.</strong> Build your community locally, then expand city by city with our playbook.</li>
-          </ol>
-        </div>
-      </section>
+     {/* Roadmap Section */}
+<section id="roadmap" style={section}>
+  <div style={container}>
+    <h2 style={h2}>The Roadmap</h2>
+    <p style={subheader}>
+      From zero to hero — your journey in five simple steps.
+    </p>
+    <div style={stepsGrid}>
+      <Step num="1" title="Sign Up & Onboard" text="Provide your info, music, and materials in one simple form — it only takes minutes." />
+      <Step num="2" title="We Build" text="Our team creates your City Showcase Site and PR package — all done for you." />
+      <Step num="3" title="We Publish" text="Your feature article and press release go live, giving you instant credibility." />
+      <Step num="4" title="We Amplify" text="We promote you across The Underground ecosystem so the right people discover you." />
+      <Step num="5" title="You Grow" text="Build your fanbase locally, then expand city by city with a proven path forward." />
+    </div>
+  </div>
+</section>
 
       {/* Pricing */}
       <section id="pricing" style={section}>
@@ -424,6 +429,56 @@ const mediaBlock = {
   color: "#999",
   fontSize: 16,
   fontStyle: "italic"
+};
+const stepsGrid = {
+  display: "grid",
+  gap: 20,
+  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+  marginTop: 24
+};
+
+const stepItem = {
+  display: "flex",
+  gap: 14,
+  alignItems: "flex-start",
+  padding: "16px 14px",
+  border: "1px solid #eee",
+  borderRadius: 12,
+  background: "#fafafa"
+};
+
+const stepNum = {
+  minWidth: 32,
+  height: 32,
+  borderRadius: "50%",
+  background: "#e11d2e", // outlaw red accent
+  color: "#fff",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontWeight: 700
+};
+
+const stepTitle = {
+  fontWeight: 700,
+  marginBottom: 6,
+  fontSize: 17
+};
+
+const stepText = {
+  margin: 0,
+  color: "#555",
+  lineHeight: 1.5
+};
+
+const subheader = {
+  textAlign: "center",
+  maxWidth: 700,
+  margin: "0 auto 28px",
+  fontSize: 18,
+  color: "#666",
+  fontStyle: "italic", // 👈 italic styling
+  lineHeight: 1.5
 };
 
 

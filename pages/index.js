@@ -35,42 +35,47 @@ export default function Home() {
       </section>
 
       {/* Features / Deliverables */}
-      <section id="features" style={section}>
-        <div style={container}>
-          <h2 style={h2}>What You Get</h2>
-          <div style={grid}>
-            <Feature
-              title="City Showcase Site"
-              text="A custom-built hub website with your full EPK and more — press assets, music, videos, calendar, links — all in one place."
-            />
-            <Feature
-              title="Feature Article"
-              text="A premium write-up about your story and sound, professionally written and published in a genre-specific music magazine."
-            />
-            <Feature
-              title="Press Release"
-              text="Crafted and distributed to industry and media — a credible, professional announcement that helps you break through."
-            />
-            <Feature
-              title="Artist Interview"
-              text="A guided interview conducted by our team and published to showcase your voice, personality, and creative vision."
-            />
-            <Feature
-              title="Artist Manager (Members-Only)"
-              text="Actionable guidance, tools, and trend insights — from local growth to national momentum, independence-first."
-            />
-            <Feature
-              title="Social & Discovery Boost"
-              text="Amplification across our channels and ecosystem — including placements that help new fans find you faster."
-            />
-          </div>
+     <section id="features" style={section}>
+  <div style={container}>
+    <h2 style={h2}>What’s Included in The Unsigned Underground Artist Package</h2>
 
-          {/* Low one-time price line (standalone) */}
-          <p style={oneLinePrice}>All this included in one low, one-time price.</p>
-        </div>
-      </section>
+    {/* Row 1 (2 items) */}
+    <div style={includedRow}>
+      <IncludedItem
+        title="City Showcase Site"
+        desc="A custom-built hub website with your full EPK and more — press assets, music, videos, calendar, and links — all in one place."
+      />
+      <IncludedItem
+        title="Feature Article"
+        desc="A premium write-up about your story and sound, professionally written and published in a genre-specific music magazine."
+      />
+    </div>
 
-      {/* How It Works */}
+    {/* Row 2 (2 items) */}
+    <div style={includedRow}>
+      <IncludedItem
+        title="Press Release"
+        desc="Crafted and distributed to industry and media — a credible, professional announcement that helps you break through."
+      />
+      <IncludedItem
+        title="Artist Manager (Members-Only)"
+        desc="Actionable guidance, tools, and trend insights — from local growth to national momentum, independence-first."
+      />
+    </div>
+
+    {/* Row 3 (1 centered item) */}
+    <div style={{ ...includedRow, justifyContent: "center" }}>
+      <IncludedItem
+        title="Social & Discovery Boost"
+        desc="Amplification across our ecosystem and channels — placements that help new fans find you faster."
+      />
+    </div>
+
+    {/* Low one-time price line (standalone) */}
+    <p style={oneLinePrice}>All this included in one low, one-time price.</p>
+  </div>
+</section>
+
       <section id="how" style={altSection}>
         <div style={container}>
           <h2 style={h2}>How It Works</h2>
@@ -145,6 +150,17 @@ function FAQ({ q, a }) {
     <div style={faqItem}>
       <h4 style={{margin:"0 0 6px 0"}}>{q}</h4>
       <p style={{margin:0, color:"#555"}}>{a}</p>
+    </div>
+  );
+}
+function IncludedItem({ title, desc }) {
+  return (
+    <div style={includedItem}>
+      <div style={bullet} aria-hidden="true">•</div>
+      <div>
+        <div style={includedTitle}>{title}</div>
+        <p style={includedDesc}>{desc}</p>
+      </div>
     </div>
   );
 }
@@ -274,3 +290,43 @@ const finalCta = {
   color: "#fff",
   border: "1px solid #111"
 };
+const includedRow = {
+  display: "flex",
+  gap: 28,
+  alignItems: "flex-start",
+  justifyContent: "space-between",
+  flexWrap: "wrap",
+  marginBottom: 18
+};
+
+const includedItem = {
+  display: "flex",
+  gap: 12,
+  alignItems: "flex-start",
+  maxWidth: 520,
+  flex: "1 1 420px",
+  borderBottom: "1px solid #eee",
+  paddingBottom: 10
+};
+
+const bullet = {
+  fontSize: 28,
+  lineHeight: "28px",
+  marginTop: 2,
+  color: "#e11d2e", // accent red
+  minWidth: 24,
+  textAlign: "center"
+};
+
+const includedTitle = {
+  fontWeight: 700,
+  margin: "0 0 4px 0",
+  fontSize: 18
+};
+
+const includedDesc = {
+  margin: 0,
+  color: "#555",
+  lineHeight: 1.6
+};
+

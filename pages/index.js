@@ -85,29 +85,37 @@ export default function Home() {
       What’s Holding <span style={{fontStyle:"italic", textDecoration:"underline"}}>You</span> Back
     </h2>
     <div style={painGrid}>
-      <div style={painItem}>
-        <strong>High PR & marketing costs</strong>
-        <p style={painText}>
-          Professional press campaigns can run thousands of dollars — out of reach for most independent artists.
-        </p>
+      <div style={painCol}>
+        <div style={painBox}>
+          <div style={painTitle}>High PR &amp; Marketing Costs</div>
+          <p style={painText}>
+            Professional press campaigns can run thousands of dollars — out of reach for most independent artists.
+          </p>
+        </div>
       </div>
-      <div style={painItem}>
-        <strong>Pay-to-play & locked platforms</strong>
-        <p style={painText}>
-          Too many platforms hide features behind expensive paywalls or push you into “pay-to-play” schemes that drain your budget.
-        </p>
+      <div style={painCol}>
+        <div style={painBox}>
+          <div style={painTitle}>Pay-to-Play &amp; Locked Platforms</div>
+          <p style={painText}>
+            Too many platforms hide features behind expensive paywalls or push you into “pay-to-play” schemes that drain your budget.
+          </p>
+        </div>
       </div>
-      <div style={painItem}>
-        <strong>Getting lost in the noise</strong>
-        <p style={painText}>
-          With countless artists releasing daily, standing out without label connections feels nearly impossible.
-        </p>
+      <div style={painCol}>
+        <div style={painBox}>
+          <div style={painTitle}>Getting Lost in the Noise</div>
+          <p style={painText}>
+            With countless artists releasing daily, standing out without label connections feels nearly impossible.
+          </p>
+        </div>
       </div>
-      <div style={painItem}>
-        <strong>Hard to build real community</strong>
-        <p style={painText}>
-          Social platforms chase algorithms, not fans. What you need is to grow an audience that actually supports your music.
-        </p>
+      <div style={painCol}>
+        <div style={painBox}>
+          <div style={painTitle}>Hard to Build Real Community</div>
+          <p style={painText}>
+            Social platforms chase algorithms, not fans. What you need is to grow an audience that actually supports your music.
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -590,21 +598,34 @@ const painHeader = {
 
 const painGrid = {
   display: "grid",
-  gap: 20,
-  gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+  gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+  gap: 24,
   maxWidth: 1000,
   margin: "0 auto"
 };
 
-const painItem = {
-  border: "1px solid #eee",
-  borderRadius: 12,
-  padding: 18,
+const painCol = {
+  display: "flex",
+  justifyContent: "center"
+};
+
+const painBox = {
+  border: "1px solid #ddd",
+  borderRadius: 10,
+  padding: 20,
+  maxWidth: 420,
   background: "#fff"
 };
 
+const painTitle = {
+  fontWeight: 700,
+  fontSize: 18,
+  marginBottom: 8,
+  textDecoration: "underline"
+};
+
 const painText = {
-  margin: "6px 0 0",
+  margin: 0,
   color: "#555",
   lineHeight: 1.6,
   fontSize: 15

@@ -78,6 +78,41 @@ export default function Home() {
   </div>
 </section>
 
+{/* Pain Points Section */}
+<section style={altSection}>
+  <div style={container}>
+    <h2 style={painHeader}>
+      What’s Holding <span style={{fontStyle:"italic", textDecoration:"underline"}}>You</span> Back
+    </h2>
+    <div style={painGrid}>
+      <div style={painItem}>
+        <strong>High PR & marketing costs</strong>
+        <p style={painText}>
+          Professional press campaigns can run thousands of dollars — out of reach for most independent artists.
+        </p>
+      </div>
+      <div style={painItem}>
+        <strong>Pay-to-play & locked platforms</strong>
+        <p style={painText}>
+          Too many platforms hide features behind expensive paywalls or push you into “pay-to-play” schemes that drain your budget.
+        </p>
+      </div>
+      <div style={painItem}>
+        <strong>Getting lost in the noise</strong>
+        <p style={painText}>
+          With countless artists releasing daily, standing out without label connections feels nearly impossible.
+        </p>
+      </div>
+      <div style={painItem}>
+        <strong>Hard to build real community</strong>
+        <p style={painText}>
+          Social platforms chase algorithms, not fans. What you need is to grow an audience that actually supports your music.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
       {/* Features / Deliverables */}
      <section id="features" style={section}>
   <div style={container}>

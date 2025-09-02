@@ -1,254 +1,128 @@
-export default function Home() {
-  async function startCheckout() {
-    try {
-      const res = await fetch('/api/checkout/create-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-        // no body needed — backend will use STRIPE_TEST_PRICE_ID if present
-      });
-      const data = await res.json();
-      if (data?.url) {
-        window.location.href = data.url; // Redirect to Stripe Checkout
-      } else {
-        alert(data?.error || 'Checkout unavailable.');
-      }
-    } catch (err) {
-      console.error('startCheckout error:', err);
-      alert('Network error. Please try again.');
-    }
-  }
-
+export default function LandingPage() {
   return (
-    <main style={page}>
-      {/* Hero */}
-      <section style={hero}>
-        <div style={container}>
-          <h1 style={heroTitle}>The Unsigned Underground</h1>
-          <p style={heroSubtitle}>
-            Real PR. Real Exposure. Real Fans. Your success all begins by <strong>building your community</strong> — we’ll help you grow from local hero to national act.
-          </p>
-          <div style={ctaRow}>
-            <a href="#features" style={primaryBtn}>See What You Get</a>
-            <button onClick={startCheckout} style={secondaryBtn}>Get Started</button>
-          </div>
-        </div>
-      </section>
- 
-  {/* Mission Statement */}
-<section style={altSection}>
-  <div style={container}>
-    <h2 style={missionHeader}>The Underground Mission</h2>
-    <p style={{maxWidth:800, margin:"0 auto", lineHeight:1.7, color:"#444", fontSize:17}}>
-      The Unsigned Underground gives independent artists the tools, exposure, and credibility they deserve—without waiting for a label or overspending on PR. We help you build your community first, starting locally and growing city by city. With proven strategies, industry-level presentation, and a platform built for independents, we make it affordable to stand out, grow your fanbase, and get discovered on your own terms.
-    </p>
-  </div>
-</section>
-
-{/* What Unsigned Underground Does Section */}
-<section style={section}>
-  <div style={container}>
-    <h2 style={h2}>The Underground Advantage</h2>
-    <p style={subheader}>
-      Marketing yourself and your music can feel overwhelming — but it doesn’t have to be.
-    </p>
-    <div style={{maxWidth:800, margin:"0 auto", lineHeight:1.7, color:"#444", fontSize:17}}>
-      <p style={{marginBottom:16}}>
-        The Unsigned Underground builds your professional artist site and PR package for you, 
-        at a low one-time cost — so you can focus on creating music instead of wrestling with marketing.
-      </p>
-      <p style={{marginBottom:16}}>
-        This isn’t just another website. Your City Showcase Site is designed from the ground up 
-        to be SEO-friendly and targeted, helping the right audience find you — fans in your 
-        community and industry contacts who matter most.
-      </p>
-      <p style={{marginBottom:16}}>
-        Once it’s live, you have full control — it’s easy to edit, update, and maintain on your own, 
-        so your music and story always stay current.
-      </p>
-      <p style={{marginBottom:24}}>
-        Other platforms lock important features behind expensive paywalls or operate on 
-        pay-to-play models that drain your budget. The Unsigned Underground is different: 
-        simple, affordable, and focused on building your community and sharpening your brand.
-      </p>
-      <p style={{fontWeight:600, color:"#222", fontSize:18, textAlign:"center"}}>
-        When you join The Underground, we can help launch you forward in ways the industry will never see coming — 
-        the smartest way to take control of your career and get discovered.
-      </p>
-    </div>
-  </div>
-</section>
-
-{/* Pain Points Section */}
-<section style={altSection}>
-  <div style={container}>
-    <h2 style={painHeader}>
-      What’s Holding <span style={{fontStyle:"italic", textDecoration:"underline"}}>You</span> Back
-    </h2>
-    <div style={painGrid}>
-      <div style={painCol}>
-        <div style={painBox}>
-          <div style={painTitle}>High PR &amp; Marketing Costs</div>
-          <p style={painText}>
-            Professional press campaigns can run thousands of dollars — out of reach for most independent artists.
-          </p>
-        </div>
-      </div>
-      <div style={painCol}>
-        <div style={painBox}>
-          <div style={painTitle}>Pay-to-Play &amp; Locked Platforms</div>
-          <p style={painText}>
-            Too many platforms hide features behind expensive paywalls or push you into “pay-to-play” schemes that drain your budget.
-          </p>
-        </div>
-      </div>
-      <div style={painCol}>
-        <div style={painBox}>
-          <div style={painTitle}>Getting Lost in the Noise</div>
-          <p style={painText}>
-            With countless artists releasing daily, standing out without label connections feels nearly impossible.
-          </p>
-        </div>
-      </div>
-      <div style={painCol}>
-        <div style={painBox}>
-          <div style={painTitle}>Hard to Build Real Community</div>
-          <p style={painText}>
-            Social platforms chase algorithms, not fans. What you need is to grow an audience that actually supports your music.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-      {/* Features / Deliverables */}
-     <section id="features" style={section}>
-  <div style={container}>
-    <h2 style={h2}>What’s Included in The Unsigned Underground Artist Package</h2>
-
-    {/* Row 1 (2 items) */}
-    <div style={includedRow}>
-      <IncludedItem
-        title="City Showcase Site"
-        desc="A custom-built hub website with your full EPK and more — press assets, music, videos, calendar, and links — all in one place."
-      />
-      <IncludedItem
-        title="Feature Article"
-        desc="A premium write-up about your story and sound, professionally written and published in a genre-specific music magazine."
-      />
-    </div>
-
-    {/* Row 2 (2 items) */}
-    <div style={includedRow}>
-      <IncludedItem
-        title="Press Release"
-        desc="Crafted and distributed to industry and media — a credible, professional announcement that helps you break through."
-      />
-      <IncludedItem
-        title="Artist Manager (Members-Only)"
-        desc="Actionable guidance, tools, and trend insights — from local growth to national momentum, independence-first."
-      />
-    </div>
-
-    {/* Row 3 (1 centered item) */}
-    <div style={{ ...includedRow, justifyContent: "center" }}>
-      <IncludedItem
-        title="Social & Discovery Boost"
-        desc="Amplification across our ecosystem and channels — placements that help new fans find you faster."
-      />
-    </div>
-
-    {/* Low one-time price line (standalone) */}
-    <p style={oneLinePrice}>All this included in one low, one-time price.</p>
-  </div>
-</section>
-
-      {/* Media Showcase Section */}
-<section style={altSection}>
-  <div style={container}>
-    <h2 style={h2}>See The Underground In Action</h2>
-    <p style={{maxWidth:800, margin:"0 auto 32px", textAlign:"center", color:"#555", fontSize:16}}>
-      Your City Showcase Site, press features, and online magazine posts are designed to look professional, 
-      stand out, and grab attention. Here’s a glimpse of what your presence in The Underground could look like.
-    </p>
-    <div style={mediaGrid}>
-      <div style={mediaBlock}>[ Showcase Site Image ]</div>
-      <div style={mediaBlock}>[ EPK / Feature Article ]</div>
-      <div style={mediaBlock}>[ Online Magazine Post ]</div>
-    </div>
-  </div>
-</section>
-
-    <section id="roadmap" style={section}>
-  <div style={container}>
-    <h2 style={h2}>The Roadmap</h2>
-    <p style={subheader}>From zero to hero — your journey in five simple steps.</p>
-    <div style={stepsGrid}>
-      <Step num="1" title="Sign Up & Onboard" text="Provide your info, music, and materials in one simple form — it only takes minutes." />
-      <Step num="2" title="We Build" text="Our team creates your City Showcase Site and PR package — all done for you." />
-      <Step num="3" title="We Publish" text="Your feature article and press release go live, giving you instant credibility." />
-      <Step num="4" title="We Amplify" text="We promote you across The Underground ecosystem so the right people discover you." />
-      <Step num="5" title="You Grow" text="Build your fanbase locally, then expand city by city with a proven path forward." />
-    </div>
-  </div>
-</section>
-
-      {/* Pricing */}
-      <section id="pricing" style={section}>
-        <div style={container}>
-          <h2 style={h2}>Pricing</h2>
-          <div style={priceCard}>
-            <div>
-              <h3 style={{margin:0, fontSize:24}}>Annual UU Package</h3>
-              <p style={{margin:"8px 0 16px 0", color:"#666"}}>City Showcase Site, press package, and Artist Manager access.</p>
-              <div style={{fontSize:36, fontWeight:700}}>$349.99</div>
-            </div>
-            <button onClick={startCheckout} style={primaryBtnWide}>Start Checkout</button>
-          </div>
-        </div>
+    <div className="bg-white text-gray-900">
+      {/* Hero Section */}
+      <section className="text-center py-20 bg-gradient-to-b from-black via-gray-900 to-black text-white">
+        <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          Get everything you need to promote your music and career — for less than $1 per day.
+        </h1>
+        <p className="text-lg md:text-xl max-w-2xl mx-auto mb-8">
+          Tired of all the NOISE on social media and across the web? <br />
+          With <span className="font-bold">The Unsigned Underground</span>, you get a complete <span className="font-bold">ARTIST FIRST</span> platform —
+          your own showcase site, professional PR, playlist placement, fan growth tools, and more.
+        </p>
+        <a
+          href="#join"
+          className="inline-block bg-red-600 hover:bg-red-700 text-white font-bold text-lg px-8 py-4 rounded-2xl shadow-lg transition-all"
+        >
+          Join The Unsigned Underground Now
+        </a>
+        <p className="mt-4 text-sm italic">
+          Includes hosting for 12 months. No hidden fees. Artist First always.
+        </p>
       </section>
 
-     {/* Mini FAQ (accordion) */}
-<section id="faq" style={altSection}>
-  <div style={container}>
-    <h2 style={h2}>FAQ</h2>
-
-    <div style={accordionWrap}>
-      <AccordionItem
-        q="How fast can my page go live?"
-        a="Once you complete onboarding and provide your assets, we typically deliver your first City Showcase draft in a few business days. Press items (feature article, press release) follow shortly after. Timing depends on your materials and revisions."
-      />
-      <AccordionItem
-        q="Do I keep ownership of my music and content?"
-        a="Yes. You retain full ownership. You simply grant us permission to display and promote your materials on your City Showcase Site and across our ecosystem."
-      />
-      <AccordionItem
-        q="Can I update my site after it’s live?"
-        a="Yes. You’ll be able to edit and update your City Showcase Site easily so your fans and industry contacts always see your latest music, shows, and news."
-      />
-      <AccordionItem
-        q="Are there ongoing costs?"
-        a="There’s a one-time build/startup fee for your Showcase and PR package. Optional membership plans (monthly/annual) cover ongoing hosting, updates, and promotion. You’ll always see current options clearly at checkout."
-      />
-    </div>
-
-    <div style={{textAlign:"center", marginTop:16}}>
-      <a href="/faq" style={{color:"#111", textDecoration:"underline"}}>View all FAQs</a>
-    </div>
-  </div>
-</section>
-
-      {/* Final CTA */}
-      <section style={section}>
-        <div style={container}>
-          <div style={finalCta}>
-            <h2 style={{margin:"0 0 8px 0"}}>Ready to take the next step?</h2>
-            <p style={{margin:"0 0 16px 0", color:"#666"}}>Join The Underground and start building your community today.</p>
-            <button onClick={startCheckout} style={primaryBtn}>Join The Underground</button>
-          </div>
-        </div>
+      {/* Section 1 – What You Get */}
+      <section className="py-16 max-w-5xl mx-auto px-6">
+        <h2 className="text-3xl font-bold text-center mb-12">What You Get</h2>
+        <ul className="space-y-8">
+          <li>
+            <h3 className="font-bold text-xl">Your Own City Showcase Site</h3>
+            <p>
+              Professionally built, search-optimized to get you noticed fast (much better than just a website). This is your official online home — a
+              <strong> fan-facing environment</strong> online to house your <strong>Electronic Press Kit (an EPK we build for you)</strong>, music player,
+              photos, gig calendar, video embeds, links to socials, your own press room, and more.
+            </p>
+          </li>
+          <li>
+            <h3 className="font-bold text-xl">Professional PR That Gets Published</h3>
+            <p>
+              We create your first <strong>press release</strong>, <strong>artist article</strong>, and <strong>exclusive interview</strong> — and publish
+              them inside a <strong>Music Blog Magazine</strong> where artists, fans, and industry eyes go to discover new talent like yours.
+            </p>
+          </li>
+          <li>
+            <h3 className="font-bold text-xl">Industry Best Fan Growth Tools You Can Really Use</h3>
+            <p>
+              Build your fan base where you live and perform. We give you the platform to quickly grow a loyal fan base that can propel your music to
+              dominate city by city, state by state.
+            </p>
+          </li>
+          <li>
+            <h3 className="font-bold text-xl">Artist Manager (Members-Only)</h3>
+            <p>
+              An always-available, industry-backed career guide covering everything from marketing and gigs to distribution, monetization, and contracts.
+            </p>
+          </li>
+          <li>
+            <h3 className="font-bold text-xl">Curated Playlist Inclusion (For Your Genre)</h3>
+            <p>
+              No pay to play, and no having to pitch your song to playlists. Your song gets placement on our Underground curated{" "}
+              <strong>Spotify playlists</strong>, plus blog features and shoutouts across our network.
+            </p>
+          </li>
+          <li>
+            <h3 className="font-bold text-xl">Free Music Release Tools</h3>
+            <p>
+              We provide easy-to-use tools — <strong>for FREE</strong> — to help you distribute and release your music. No pay to play.
+            </p>
+          </li>
+        </ul>
       </section>
-    </main>
+
+      {/* Section 2 – Why It Works */}
+      <section className="bg-gray-100 py-16 px-6">
+        <h2 className="text-3xl font-bold text-center mb-12">Why It Works</h2>
+        <ul className="max-w-4xl mx-auto space-y-8">
+          <li>
+            <h3 className="font-bold text-xl">Community First</h3>
+            <p>
+              Fans discover you through their city’s SEO Showcase Site and an online Music Blog Magazine with a music article written about you.
+            </p>
+          </li>
+          <li>
+            <h3 className="font-bold text-xl">Professional Credibility</h3>
+            <p>Your PR assets and showcase site instantly set you apart.</p>
+          </li>
+          <li>
+            <h3 className="font-bold text-xl">Scalable Growth</h3>
+            <p>Once you dominate locally, <strong>The Unsigned Underground</strong> helps you branch into new cities and scenes.</p>
+          </li>
+        </ul>
+      </section>
+
+      {/* Section 3 – The Cost Breakdown */}
+      <section className="py-16 max-w-5xl mx-auto px-6">
+        <h2 className="text-3xl font-bold text-center mb-12">The Cost Breakdown</h2>
+        <p className="text-center mb-6">
+          Other platforms charge monthly fees for everything, pay to play is their game, and you have to build your own website and get no PR or growth
+          tools to go with it.
+        </p>
+        <p className="text-center text-red-600 font-bold text-xl mb-8">Enough with the nickel and dime fees!</p>
+        <ul className="space-y-4 text-lg">
+          <li>✔ <strong>We build for you:</strong> Site + Professional PR + Playlist Inclusion + Manager + Growth Tools</li>
+          <li>✔ Ongoing promotion across our ecosystem</li>
+          <li>✔ All included for <strong>less than $1/day</strong></li>
+        </ul>
+        <p className="text-center mt-6 font-semibold text-xl">
+          That’s less than $30/month for everything to promote your music and career — and no hidden fees.
+        </p>
+      </section>
+
+      {/* Call to Action */}
+      <section id="join" className="text-center py-20 bg-black text-white">
+        <h2 className="text-3xl md:text-4xl font-bold mb-6">Your music deserves to be seen and heard.</h2>
+        <p className="text-lg mb-8">
+          Don’t pay to play on other sites. With <strong>The Unsigned Underground</strong> it’s Artist First, no hidden fees.
+        </p>
+        <a
+          href="#"
+          className="inline-block bg-red-600 hover:bg-red-700 text-white font-bold text-2xl px-10 py-5 rounded-2xl shadow-xl transition-all"
+        >
+          Join The Unsigned Underground Now
+        </a>
+      </section>
+    </div>
   );
 }
 

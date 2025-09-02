@@ -149,12 +149,19 @@ export default function Home() {
   );
 }
 
+/* ---------- Brand Colors ---------- */
+const colors = {
+  outlawRed: "#e11d2e",    // outlaw red accent
+  vintageCream: "#fdf5e6", // vintage cream text
+  black: "#000000"         // black background
+};
+
 /* ---------- Styles ---------- */
 
 const page = {
   fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif",
-  color: "#111",
-  background: "#fff"
+  color: colors.vintageCream,
+  background: colors.black
 };
 
 const container = {
@@ -167,53 +174,154 @@ const container = {
 const hero = {
   textAlign: "center",
   padding: "80px 0 64px",
-  color: "#fff",
-  background: "linear-gradient(180deg, #000 0%, #111 50%, #000 100%)",
-  borderBottom: "1px solid #1f1f1f"
+  color: colors.vintageCream,
+  background: colors.black,
+  borderBottom: `2px solid ${colors.outlawRed}`
 };
-const heroTitle = { fontSize: 42, lineHeight: 1.15, fontWeight: 800, margin: "0 0 16px 0", letterSpacing: "-0.3px" };
-const heroSubtitle = { fontSize: 18, maxWidth: 760, margin: "0 auto 20px", color: "rgba(255,255,255,0.9)", lineHeight: 1.7 };
+const heroTitle = {
+  fontSize: 42,
+  lineHeight: 1.15,
+  fontWeight: 800,
+  margin: "0 0 16px 0",
+  letterSpacing: "-0.3px"
+};
+const heroSubtitle = {
+  fontSize: 18,
+  maxWidth: 760,
+  margin: "0 auto 20px",
+  color: colors.vintageCream,
+  lineHeight: 1.7
+};
 const ctaRow = { display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" };
 const primaryBtn = {
   display: "inline-block",
   padding: "14px 18px",
   borderRadius: 16,
-  background: "#e11d2e",
-  color: "#fff",
-  border: "1px solid #e11d2e",
+  background: colors.outlawRed,
+  color: colors.vintageCream,
+  border: `1px solid ${colors.outlawRed}`,
   fontWeight: 700,
   cursor: "pointer",
-  boxShadow: "0 6px 18px rgba(225,29,46,0.35)"
+  boxShadow: `0 6px 18px rgba(225,29,46,0.35)`
 };
-const heroNote = { marginTop: 12, fontStyle: "italic", opacity: 0.9, fontSize: 14 };
+const heroNote = {
+  marginTop: 12,
+  fontStyle: "italic",
+  opacity: 0.9,
+  fontSize: 14,
+  color: colors.vintageCream
+};
 
 /* Sections */
-const section = { padding: "64px 0" };
-const altSection = { ...section, background: "#f5f5f5", borderTop: "1px solid #eee", borderBottom: "1px solid #eee" };
-const h2 = { margin: "0 0 20px 0", fontSize: 30, letterSpacing: "-0.3px", textAlign: "center", fontWeight: 800 };
+const section = {
+  padding: "64px 0",
+  background: colors.black,
+  borderBottom: `1px solid ${colors.outlawRed}`
+};
+const altSection = {
+  ...section,
+  background: "#111", // slightly lighter than black for contrast
+  borderTop: `1px solid ${colors.outlawRed}`,
+  borderBottom: `1px solid ${colors.outlawRed}`
+};
+const h2 = {
+  margin: "0 0 20px 0",
+  fontSize: 30,
+  textAlign: "center",
+  fontWeight: 800,
+  color: colors.vintageCream,
+  borderBottom: `2px solid ${colors.outlawRed}`,
+  display: "inline-block",
+  paddingBottom: 4
+};
 
 /* Lists */
-const listStack = { listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 18 };
-const liBlock = { border: "1px solid #eee", borderRadius: 12, padding: 16, background: "#fff" };
-const liBlockAlt = { borderBottom: "1px solid #ddd", padding: "10px 2px" };
-const liTitle = { margin: "0 0 6px 0", fontSize: 20, fontWeight: 800 };
-const liTitleUnderline = { ...liTitle, textDecoration: "underline" };
-const liText = { margin: 0, color: "#444", lineHeight: 1.7 };
+const listStack = {
+  listStyle: "none",
+  margin: 0,
+  padding: 0,
+  display: "grid",
+  gap: 18
+};
+const liBlock = {
+  border: `1px solid ${colors.outlawRed}`,
+  borderRadius: 12,
+  padding: 16,
+  background: colors.black
+};
+const liBlockAlt = {
+  borderBottom: `1px solid ${colors.outlawRed}`,
+  padding: "10px 2px"
+};
+const liTitle = {
+  margin: "0 0 6px 0",
+  fontSize: 20,
+  fontWeight: 800,
+  color: colors.vintageCream
+};
+const liTitleUnderline = {
+  ...liTitle,
+  textDecoration: "underline",
+  borderBottom: `1px solid ${colors.outlawRed}`,
+  paddingBottom: 2
+};
+const liText = { margin: 0, color: colors.vintageCream, lineHeight: 1.7 };
 
 /* Cost section */
-const centerText = { textAlign: "center", color: "#444", lineHeight: 1.7 };
-const costPunch = { textAlign: "center", color: "#e11d2e", fontWeight: 800, fontSize: 20, margin: "0 0 18px 0" };
-const checkList = { margin: "0 auto", paddingLeft: 0, listStyle: "none", lineHeight: 1.9, maxWidth: 780, fontSize: 18 };
-const costCloser = { textAlign: "center", marginTop: 16, fontWeight: 700, fontSize: 18 };
+const centerText = {
+  textAlign: "center",
+  color: colors.vintageCream,
+  lineHeight: 1.7
+};
+const costPunch = {
+  textAlign: "center",
+  color: colors.outlawRed,
+  fontWeight: 800,
+  fontSize: 20,
+  margin: "0 0 18px 0"
+};
+const checkList = {
+  margin: "0 auto",
+  paddingLeft: 0,
+  listStyle: "none",
+  lineHeight: 1.9,
+  maxWidth: 780,
+  fontSize: 18,
+  color: colors.vintageCream
+};
+const costCloser = {
+  textAlign: "center",
+  marginTop: 16,
+  fontWeight: 700,
+  fontSize: 18,
+  color: colors.vintageCream
+};
 
 /* CTA footer */
-const ctaSection = { textAlign: "center", padding: "80px 0", background: "#000", color: "#fff", borderTop: "1px solid #1a1a1a" };
-const ctaTitle = { margin: "0 0 12px 0", fontSize: 34, fontWeight: 800 };
-const ctaSub = { color: "rgba(255,255,255,0.9)", fontSize: 18, margin: "0 0 20px 0" };
+const ctaSection = {
+  textAlign: "center",
+  padding: "80px 0",
+  background: colors.black,
+  color: colors.vintageCream,
+  borderTop: `2px solid ${colors.outlawRed}`
+};
+const ctaTitle = {
+  margin: "0 0 12px 0",
+  fontSize: 34,
+  fontWeight: 800,
+  color: colors.vintageCream
+};
+const ctaSub = {
+  color: colors.vintageCream,
+  fontSize: 18,
+  margin: "0 0 20px 0"
+};
 const ctaButton = {
   ...primaryBtn,
   fontSize: 20,
   padding: "16px 22px",
   borderRadius: 18,
-  boxShadow: "0 10px 24px rgba(225,29,46,0.35)"
+  background: colors.outlawRed,
+  color: colors.vintageCream,
+  border: `1px solid ${colors.outlawRed}`
 };

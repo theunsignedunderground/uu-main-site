@@ -582,3 +582,30 @@ const accordionPanel = {
   lineHeight: 1.6
 };
 
+const painHeader = {
+  ...h2,
+  textAlign: "center",
+  marginBottom: 28
+};
+
+const painGrid = {
+  display: "grid",
+  gap: 20,
+  gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+  maxWidth: 1000,
+  margin: "0 auto"
+};
+
+const painItem = {
+  border: "1px solid #eee",
+  borderRadius: 12,
+  padding: 18,
+  background: "#fff"
+};
+
+const painText = {
+  margin: "6px 0 0",
+  color: "#555",
+  lineHeight: 1.6,
+  fontSize: 15
+};

@@ -250,8 +250,7 @@ const liBlock = {
   background: colors.black
 };
 const liBlockAlt = {
-  borderBottom: `1px solid ${colors.outlawRed}`,
-  padding: "10px 2px"
+  padding: "10px 2px" // ❌ removed borderBottom
 };
 const liTitle = {
   margin: "0 0 6px 0",
@@ -260,10 +259,11 @@ const liTitle = {
   color: colors.vintageCream
 };
 const liTitleUnderline = {
-  ...liTitle,
-  textDecoration: "underline",
-  borderBottom: `1px solid ${colors.outlawRed}`,
-  paddingBottom: 2
+  margin: "0 0 6px 0",
+  fontSize: 20,
+  fontWeight: 800,
+  color: colors.vintageCream,
+  textDecoration: "underline"
 };
 const liText = { margin: 0, color: colors.vintageCream, lineHeight: 1.7 };
 

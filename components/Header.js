@@ -1,36 +1,9 @@
 // components/Header.js
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Header() {
   const [open, setOpen] = useState(null); // 'features' | 'pricing' | null
-  const [scale, setScale] = useState(1);
-
-  // Load & persist scale; add keyboard nudges
-  useEffect(() => {
-    const saved = parseFloat(localStorage.getItem("uuHeaderScale"));
-    if (!Number.isNaN(saved) && saved > 0) setScale(saved);
-
-    const onKey = (e) => {
-      const mod = e.ctrlKey && e.altKey; // Ctrl+Alt shortcuts
-      if (!mod) return;
-      if (e.key === "]") {
-        const next = Math.min(1.8, +(scale + 0.05).toFixed(2));
-        setScale(next);
-        localStorage.setItem("uuHeaderScale", String(next));
-      } else if (e.key === "[") {
-        const next = Math.max(0.7, +(scale - 0.05).toFixed(2));
-        setScale(next);
-        localStorage.setItem("uuHeaderScale", String(next));
-      } else if (e.key === "0") {
-        setScale(1);
-        localStorage.setItem("uuHeaderScale", "1");
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [scale]);
-
-  // Custom property available to all inline styles below
+  const scale = 0.85; // baked-in scale you liked
   const scaleVar = { ["--s"]: scale };
 
   return (
@@ -135,7 +108,6 @@ const colors = {
 };
 
 /* ---- Responsive sizes via clamp(...) × var(--s) ---- */
-/* Note: values are strings so CSS can evaluate clamp()/calc(). */
 const headerWrap = {
   position: "sticky",
   top: 0,
@@ -147,7 +119,6 @@ const headerWrap = {
 const headerInner = {
   maxWidth: 1400,
   margin: "0 auto",
-  /* vertical and horizontal padding scale with viewport + --s */
   padding: "calc(var(--s) * clamp(16px, 3vw, 28px)) calc(var(--s) * clamp(20px, 3.5vw, 36px))",
   display: "flex",
   alignItems: "center",
@@ -179,7 +150,6 @@ const navRight = {
 
 const navItemWrap = { position: "relative" };
 
-/* Core nav item size */
 const navLinkBtn = {
   background: "transparent",
   border: "none",
@@ -200,7 +170,6 @@ const navLinkA = {
   borderRadius: "calc(var(--s) * 12px)"
 };
 
-/* Dropdown container */
 const dropdown = {
   position: "absolute",
   top: "100%",

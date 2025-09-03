@@ -1,11 +1,40 @@
 // components/Header.js
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Header() {
   const [open, setOpen] = useState(null); // 'features' | 'pricing' | null
+  const [scale, setScale] = useState(1);
+
+  // Load & persist scale; add keyboard nudges
+  useEffect(() => {
+    const saved = parseFloat(localStorage.getItem("uuHeaderScale"));
+    if (!Number.isNaN(saved) && saved > 0) setScale(saved);
+
+    const onKey = (e) => {
+      const mod = e.ctrlKey && e.altKey; // Ctrl+Alt shortcuts
+      if (!mod) return;
+      if (e.key === "]") {
+        const next = Math.min(1.8, +(scale + 0.05).toFixed(2));
+        setScale(next);
+        localStorage.setItem("uuHeaderScale", String(next));
+      } else if (e.key === "[") {
+        const next = Math.max(0.7, +(scale - 0.05).toFixed(2));
+        setScale(next);
+        localStorage.setItem("uuHeaderScale", String(next));
+      } else if (e.key === "0") {
+        setScale(1);
+        localStorage.setItem("uuHeaderScale", "1");
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [scale]);
+
+  // Custom property available to all inline styles below
+  const scaleVar = { ["--s"]: scale };
 
   return (
-    <header style={headerWrap}>
+    <header style={{ ...headerWrap, ...scaleVar }}>
       <div style={headerInner}>
         {/* Logo → Home */}
         <a href="/" style={logo}>The Unsigned Underground</a>
@@ -90,7 +119,6 @@ export default function Header() {
 
         {/* Right actions (Dashboard → Login/Account) */}
         <div style={navRight}>
-          {/* Note for artists: requires plan + login, but we keep the link visible */}
           <a href="/dashboard" style={navLinkA}>Dashboard</a>
           <a href="/login" style={loginBtn}>Log in / Create account</a>
         </div>
@@ -99,14 +127,15 @@ export default function Header() {
   );
 }
 
-/* ---- Brand colors (unchanged) ---- */
+/* ---- Brand colors ---- */
 const colors = {
   outlawRed: "#e11d2e",
   vintageCream: "#fdf5e6",
   black: "#000000"
 };
 
-/* ---- Styles (scaled ~3×) ---- */
+/* ---- Responsive sizes via clamp(...) × var(--s) ---- */
+/* Note: values are strings so CSS can evaluate clamp()/calc(). */
 const headerWrap = {
   position: "sticky",
   top: 0,
@@ -116,103 +145,104 @@ const headerWrap = {
 };
 
 const headerInner = {
-  maxWidth: 1400,               // a bit wider to fit larger tabs
+  maxWidth: 1400,
   margin: "0 auto",
-  padding: "36px 28px",         // was 12px 20px → ~3× taller
+  /* vertical and horizontal padding scale with viewport + --s */
+  padding: "calc(var(--s) * clamp(16px, 3vw, 28px)) calc(var(--s) * clamp(20px, 3.5vw, 36px))",
   display: "flex",
   alignItems: "center",
-  justifyContent: "flex-start", // left-align row; spacer will push right group
-  gap: 32
+  justifyContent: "flex-start",
+  gap: "clamp(16px, 2.5vw, 32px)"
 };
 
 const logo = {
   textDecoration: "none",
   color: colors.vintageCream,
   fontWeight: 800,
-  fontSize: 46,                 // bigger logo
-  letterSpacing: 0.2
+  fontSize: "calc(var(--s) * clamp(20px, 2.4vw, 30px))",
+  letterSpacing: "0.2px"
 };
 
 const navRow = {
   display: "flex",
-  gap: 48,                      // was 16 → ~3×
+  gap: "clamp(16px, 3vw, 36px)",
   alignItems: "center"
 };
 
-const flexSpacer = {
-  flex: 1                       // pushes right actions to the far right
-};
+const flexSpacer = { flex: 1 };
 
 const navRight = {
   display: "flex",
-  gap: 36,                      // was 12 → ~3×
+  gap: "clamp(12px, 2.5vw, 28px)",
   alignItems: "center"
 };
 
 const navItemWrap = { position: "relative" };
 
+/* Core nav item size */
 const navLinkBtn = {
   background: "transparent",
   border: "none",
   color: colors.vintageCream,
   cursor: "pointer",
-  fontSize: 45,                 // was 15 → ~3×
-  padding: "18px 24px",         // larger hit target
-  lineHeight: 1.2,
-  borderRadius: 14
+  fontSize: "calc(var(--s) * clamp(16px, 1.8vw, 22px))",
+  padding: "calc(var(--s) * clamp(8px, 1.3vw, 14px)) calc(var(--s) * clamp(10px, 2vw, 18px))",
+  lineHeight: 1.25,
+  borderRadius: "calc(var(--s) * 12px)"
 };
 
 const navLinkA = {
   textDecoration: "none",
   color: colors.vintageCream,
-  fontSize: 45,                 // was 15 → ~3×
-  padding: "18px 24px",
-  lineHeight: 1.2,
-  borderRadius: 14
+  fontSize: "calc(var(--s) * clamp(16px, 1.8vw, 22px))",
+  padding: "calc(var(--s) * clamp(8px, 1.3vw, 14px)) calc(var(--s) * clamp(10px, 2vw, 18px))",
+  lineHeight: 1.25,
+  borderRadius: "calc(var(--s) * 12px)"
 };
 
+/* Dropdown container */
 const dropdown = {
   position: "absolute",
   top: "100%",
   left: 0,
-  minWidth: 520,                // wider to fit big type
+  minWidth: "clamp(260px, 28vw, 420px)",
   background: "#111",
   border: `1px solid ${colors.outlawRed}`,
-  borderRadius: 14,
-  boxShadow: "0 16px 36px rgba(225,29,46,0.25)",
-  padding: 24,
-  marginTop: 12
+  borderRadius: "calc(var(--s) * 12px)",
+  boxShadow: "0 10px 24px rgba(225,29,46,0.25)",
+  padding: "calc(var(--s) * clamp(10px, 1.6vw, 18px))",
+  marginTop: "clamp(8px, 1vw, 12px)"
 };
 
 const dropLink = {
   display: "block",
   textDecoration: "none",
   color: colors.vintageCream,
-  padding: "20px 18px",
-  borderRadius: 12
+  padding: "calc(var(--s) * clamp(12px, 1.6vw, 18px)) calc(var(--s) * clamp(12px, 1.8vw, 20px))",
+  borderRadius: "calc(var(--s) * 10px)"
 };
 
 const dropTitle = {
   fontWeight: 800,
-  fontSize: 42,                 // was 14 → ~3×
-  marginBottom: 8,
+  fontSize: "calc(var(--s) * clamp(14px, 1.8vw, 22px))",
+  marginBottom: "calc(var(--s) * 6px)",
   lineHeight: 1.15
 };
 
 const dropSub = {
-  fontSize: 36,                 // was 12 → ~3×
+  fontSize: "calc(var(--s) * clamp(12px, 1.6vw, 18px))",
   opacity: 0.9,
   lineHeight: 1.35
 };
 
 const loginBtn = {
   textDecoration: "none",
-  padding: "18px 24px",
-  borderRadius: 14,
-  border: `2px solid ${colors.outlawRed}`, // thicker border at larger scale
+  padding: "calc(var(--s) * clamp(10px, 1.4vw, 16px)) calc(var(--s) * clamp(12px, 2vw, 20px))",
+  borderRadius: "calc(var(--s) * 12px)",
+  border: `2px solid ${colors.outlawRed}`,
   background: colors.outlawRed,
   color: colors.vintageCream,
   fontWeight: 800,
-  fontSize: 45,
+  fontSize: "calc(var(--s) * clamp(16px, 1.8vw, 22px))",
   lineHeight: 1.2
 };

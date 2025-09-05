@@ -1,39 +1,41 @@
+// pages/api/checkout/create-session.js
+import Stripe from "stripe";
+export const config = { api: { bodyParser: true } };
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2024-06-20" });
+
+const PRICE_MAP = {
+  annual: process.env.STRIPE_PRICE_ANNUAL,
+  monthly: process.env.STRIPE_PRICE_MONTHLY,
+  pr_only: process.env.STRIPE_PRICE_PR_ONLY,
+};
+
+const SUBSCRIPTION_SET = new Set([PRICE_MAP.annual, PRICE_MAP.monthly]);
+
 export default async function handler(req, res) {
-  // For any non-POST, return 405 and exit — this should NEVER 500.
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    return res
-      .status(405)
-      .json({ ok: false, message: 'Method Not Allowed', method: req.method });
-  }
-
-  // Guard: if Stripe key isn't set, say so (no crash).
-  const secret = process.env.STRIPE_SECRET_KEY || '';
-  if (!secret.trim()) {
-    return res
-      .status(503)
-      .json({ error: 'Stripe is not configured yet. Add STRIPE_SECRET_KEY.' });
-  }
-
-  // Lazy import Stripe only after we know the key is present.
-  const { default: Stripe } = await import('stripe');
-  const stripe = new Stripe(secret);
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   try {
-    const line_items =
-      req.body?.line_items ??
-      [{ price: process.env.STRIPE_TEST_PRICE_ID, quantity: 1 }];
+    const { plan, customerEmail } = req.body;
+    const priceId = PRICE_MAP[plan];
+    if (!priceId) return res.status(400).json({ error: "Invalid plan" });
+
+    const mode = SUBSCRIPTION_SET.has(priceId) ? "subscription" : "payment";
 
     const session = await stripe.checkout.sessions.create({
-      mode: 'subscription',
-      line_items,
-      success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.origin}/cancel`,
+      mode,
+      line_items: [{ price: priceId, quantity: 1 }],
+      customer_email: customerEmail || undefined,
+      allow_promotion_codes: true,
+      billing_address_collection: "auto",
+      success_url: `${req.headers.origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.headers.origin}/checkout/cancel`,
+      metadata: { plan }, // helpful in the webhook
     });
 
-    return res.status(200).json({ id: session.id, url: session.url });
+    res.status(200).json({ url: session.url });
   } catch (err) {
-    console.error('create-session error:', err);
-    return res.status(500).json({ error: err?.message || 'Internal Server Error' });
+    console.error("create-session error:", err);
+    res.status(400).json({ error: { message: err.message } });
   }
 }

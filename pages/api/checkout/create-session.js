@@ -28,8 +28,8 @@ export default async function handler(req, res) {
       customer_email: customerEmail || undefined,
       allow_promotion_codes: true,
       billing_address_collection: "auto",
-      success_url: `${req.headers.origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.origin}/checkout/cancel`,
+      success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.headers.origin}/cancel`,
       metadata: { plan }, // helpful in the webhook
     });
 

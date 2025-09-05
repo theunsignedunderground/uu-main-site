@@ -15,74 +15,82 @@ export default function Header() {
         {/* Left / center nav (Features → Pricing → FAQ) */}
         <nav style={navRow}>
           {/* Features dropdown */}
-          <div
-            style={navItemWrap}
-            onMouseEnter={() => setOpen("features")}
-            onMouseLeave={() => setOpen((v) => (v === "features" ? null : v))}
-          >
-            <button
-              type="button"
-              aria-haspopup="menu"
-              aria-expanded={open === "features"}
-              style={navLinkBtn}
-              onClick={() => setOpen(open === "features" ? null : "features")}
-            >
-              Features <span aria-hidden>▾</span>
-            </button>
-            {open === "features" && (
-              <div style={dropdown}>
-                <a href="/features" style={dropLink}>
-                  <div style={dropTitle}>Showcase Site</div>
-                  <div style={dropSub}>Your EPK, music, photos, shows — all in one place.</div>
-                </a>
-                <a href="/press" style={dropLink}>
-                  <div style={dropTitle}>PR & Articles</div>
-                  <div style={dropSub}>Press release + premium feature coverage.</div>
-                </a>
-                <a href="/playlists" style={dropLink}>
-                  <div style={dropTitle}>Playlists</div>
-                  <div style={dropSub}>Curated inclusion — no pay-to-play.</div>
-                </a>
-                <a href="/manager" style={dropLink}>
-                  <div style={dropTitle}>Artist Manager</div>
-                  <div style={dropSub}>Guides, tools, and templates.</div>
-                </a>
-              </div>
-            )}
-          </div>
+<div
+  style={navItemWrap}
+  onMouseEnter={() => setOpen("features")}
+  onMouseLeave={(v) => setOpen((val) => (val === "features" ? null : val))}
+>
+  <button
+    type="button"
+    aria-haspopup="menu"
+    aria-expanded={open === "features"}
+    style={navLinkBtn}
+    onClick={() => setOpen(open === "features" ? null : "features")}
+  >
+    Features <span aria-hidden>▾</span>
+  </button>
+  {open === "features" && (
+    <div
+      style={dropdown}
+      onMouseEnter={() => setOpen("features")} // 👈 keeps dropdown open when hovering into panel
+    >
+      <a href="/features" style={dropLink}>
+        <div style={dropTitle}>Showcase Site</div>
+        <div style={dropSub}>
+          Your EPK, music, photos, shows — all in one place.
+        </div>
+      </a>
+      <a href="/press" style={dropLink}>
+        <div style={dropTitle}>PR & Articles</div>
+        <div style={dropSub}>Press release + premium feature coverage.</div>
+      </a>
+      <a href="/playlists" style={dropLink}>
+        <div style={dropTitle}>Playlists</div>
+        <div style={dropSub}>Curated inclusion — no pay-to-play.</div>
+      </a>
+      <a href="/manager" style={dropLink}>
+        <div style={dropTitle}>Artist Manager</div>
+        <div style={dropSub}>Guides, tools, and templates.</div>
+      </a>
+    </div>
+  )}
+</div>
 
-          {/* Pricing dropdown */}
-          <div
-            style={navItemWrap}
-            onMouseEnter={() => setOpen("pricing")}
-            onMouseLeave={() => setOpen((v) => (v === "pricing" ? null : v))}
-          >
-            <button
-              type="button"
-              aria-haspopup="menu"
-              aria-expanded={open === "pricing"}
-              style={navLinkBtn}
-              onClick={() => setOpen(open === "pricing" ? null : "pricing")}
-            >
-              Pricing <span aria-hidden>▾</span>
-            </button>
-            {open === "pricing" && (
-              <div style={dropdown}>
-                <a href="/pricing#annual" style={dropLink}>
-                  <div style={dropTitle}>Annual Plan</div>
-                  <div style={dropSub}>Best value — one upfront payment.</div>
-                </a>
-                <a href="/pricing#monthly" style={dropLink}>
-                  <div style={dropTitle}>Monthly Plan</div>
-                  <div style={dropSub}>Same features, 12 easy payments.</div>
-                </a>
-                <a href="/pricing#pr" style={dropLink}>
-                  <div style={dropTitle}>PR + Playlist</div>
-                  <div style={dropSub}>PR + playlists, no website needed.</div>
-                </a>
-              </div>
-            )}
-          </div>
+         {/* Pricing dropdown */}
+<div
+  style={navItemWrap}
+  onMouseEnter={() => setOpen("pricing")}
+  onMouseLeave={() => setOpen((val) => (val === "pricing" ? null : val))}
+>
+  <button
+    type="button"
+    aria-haspopup="menu"
+    aria-expanded={open === "pricing"}
+    style={navLinkBtn}
+    onClick={() => setOpen(open === "pricing" ? null : "pricing")}
+  >
+    Pricing <span aria-hidden>▾</span>
+  </button>
+  {open === "pricing" && (
+    <div
+      style={dropdown}
+      onMouseEnter={() => setOpen("pricing")} // 👈 keeps dropdown open when hovering into panel
+    >
+      <a href="/pricing#annual" style={dropLink}>
+        <div style={dropTitle}>Annual Plan</div>
+        <div style={dropSub}>Best value — one upfront payment.</div>
+      </a>
+      <a href="/pricing#monthly" style={dropLink}>
+        <div style={dropTitle}>Monthly Plan</div>
+        <div style={dropSub}>Same features, 12 easy payments.</div>
+      </a>
+      <a href="/pricing#pr" style={dropLink}>
+        <div style={dropTitle}>PR + Playlist</div>
+        <div style={dropSub}>PR + playlists, no website needed.</div>
+      </a>
+    </div>
+  )}
+</div>
 
           <a href="/faq" style={navLinkA}>FAQ</a>
         </nav>
@@ -148,7 +156,10 @@ const navRight = {
   alignItems: "center"
 };
 
-const navItemWrap = { position: "relative" };
+const navItemWrap = {
+  position: "relative",
+  paddingBottom: 12, // extends the hover area so dropdown doesn't disappear
+};
 
 const navLinkBtn = {
   background: "transparent",
@@ -179,8 +190,9 @@ const dropdown = {
   border: `1px solid ${colors.outlawRed}`,
   borderRadius: "calc(var(--s) * 12px)",
   boxShadow: "0 10px 24px rgba(225,29,46,0.25)",
+  paddingTop: 12, // replaces the old marginTop
   padding: "calc(var(--s) * clamp(10px, 1.6vw, 18px))",
-  marginTop: "clamp(8px, 1vw, 12px)"
+  zIndex: 200, // keeps dropdown above header/content
 };
 
 const dropLink = {

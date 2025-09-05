@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2024-06-
 const PRICE_MAP = {
   annual: process.env.STRIPE_PRICE_ANNUAL,
   monthly: process.env.STRIPE_PRICE_MONTHLY,
-  pr_only: process.env.STRIPE_PRICE_PR_ONLY,
+  fast_track: process.env.STRIPE_PRICE_FAST_TRACK,
 };
 
 const SUBSCRIPTION_SET = new Set([PRICE_MAP.annual, PRICE_MAP.monthly]);

@@ -1,69 +1,152 @@
-export default function Dashboard() {
-  // ---- Stripe Checkout action ----
-  async function startCheckout() {
-    try {
-      const res = await fetch('/api/checkout/create-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-        // no body needed — backend will use STRIPE_TEST_PRICE_ID
-      });
+// pages/dashboard/index.js
+import Head from "next/head";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 
-      const data = await res.json();
-      if (data?.url) {
-        window.location.href = data.url; // Redirect to Stripe Checkout
-      } else {
-        alert(data?.error || 'Checkout unavailable.');
-      }
-    } catch (err) {
-      console.error('startCheckout error:', err);
-      alert('Network error. Please try again.');
-    }
-  }
+export default function Dashboard() {
+  const colors = { outlawRed: "#e11d2e", vintageCream: "#fdf5e6", black: "#000" };
+
+  const tiles = [
+    {
+      href: "/artist-expansion",
+      title: "Artist Expansion Services",
+      desc: "One-time add-ons: new press release, feature article, interview, song swap, and more.",
+      highlight: true, // draws extra attention
+    },
+    {
+      href: "/features",
+      title: "Showcase Site",
+      desc: "Manage the core elements of your public-facing Showcase.",
+    },
+    {
+      href: "/press",
+      title: "PR & Articles",
+      desc: "Review your press assets and plan your next announcement.",
+    },
+    {
+      href: "/playlists",
+      title: "Playlists",
+      desc: "Learn how placements work and best practices to grow saves.",
+    },
+    {
+      href: "/manager",
+      title: "Artist Manager",
+      desc: "Guides, tools, and templates to level up your release cycle.",
+    },
+  ];
 
   return (
-    <main style={{padding:"2rem", maxWidth: 960, margin:"0 auto", fontFamily:"system-ui, Arial, sans-serif"}}>
-      <h1>Artist Dashboard</h1>
-      <p style={{color:"#666", marginTop:6}}>
-        Welcome! From here you can access your City Showcase settings, read the Artist Manager, and (soon) complete onboarding &amp; payment.
-      </p>
+    <>
+      <Head>
+        <title>Artist Dashboard — The Unsigned Underground</title>
+        <meta name="description" content="Your Unsigned Underground dashboard." />
+      </Head>
 
-      <nav style={{display:"grid", gap:12, marginTop:24}}>
-        <a href="/dashboard/artist-manager" style={linkStyle}>Artist Manager (Q&amp;A – Static)</a>
-        <a href="/onboarding" style={linkStyle}>Complete / Edit Onboarding</a>
-        <a href="/dashboard/showcase" style={linkStyle}>City Showcase (coming soon)</a>
-        <a href="/dashboard/billing" style={linkStyle}>Billing</a>
-      </nav>
+      <main>
+        {/* Signed-out safety (middleware should gate already, but this is friendly) */}
+        <SignedOut>
+          <section className="wrap">
+            <div className="card">
+              <h1>Please sign in</h1>
+              <p className="lead">
+                This page is for members only. <a href="/sign-in">Sign in</a> to continue.
+              </p>
+            </div>
+          </section>
+        </SignedOut>
 
-      {/* Billing / Checkout section */}
-      <section style={{marginTop:24, padding:"14px 16px", border:"1px solid #eee", borderRadius:10}}>
-        <h2 style={{margin:"0 0 10px 0"}}>Billing</h2>
-        <p style={{color:"#666", margin:"0 0 12px 0"}}>
-          Click below to start your checkout (uses Stripe Test Mode).
-        </p>
-        <button onClick={startCheckout} style={buttonStyle}>
-          Start Checkout
-        </button>
-      </section>
-    </main>
+        <SignedIn>
+          <section className="wrap">
+            <header className="hero">
+              <h1>Artist Dashboard</h1>
+              <p className="lead">
+                Manage your presence, plan PR, and access members-only tools. Need more firepower?
+                Head to <a href="/artist-expansion">Artist Expansion Services</a>.
+              </p>
+            </header>
+
+            <div className="grid">
+              {tiles.map((t) => (
+                <a key={t.title} href={t.href} className={`tile ${t.highlight ? "hl" : ""}`}>
+                  <div className="tileHead">
+                    <h2>{t.title}</h2>
+                    {t.highlight && <span className="tag">Members-only</span>}
+                  </div>
+                  <p className="desc">{t.desc}</p>
+                </a>
+              ))}
+            </div>
+          </section>
+        </SignedIn>
+      </main>
+
+      <style jsx>{`
+        :root { --w: 1100px; }
+        main { background: #000; color: #fdf5e6; min-height: 100vh; }
+        .wrap { max-width: var(--w); margin: 0 auto; padding: 48px 20px 80px; }
+
+        .hero { margin-bottom: 16px; }
+        .hero h1 { margin: 0 0 6px; font-size: clamp(26px, 3.2vw, 40px); line-height: 1.15; }
+        .lead { color: #f5eede; margin: 0; font-size: clamp(16px, 1.9vw, 20px); }
+        .lead a { color: ${colors.vintageCream}; border-bottom: 1px solid ${colors.outlawRed}; text-decoration: none; }
+
+        .grid {
+          margin-top: 18px;
+          display: grid;
+          gap: 16px;
+          grid-template-columns: 1fr;
+        }
+        @media (min-width: 900px) {
+          .grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .tile {
+          border: 1px solid #2b2b2b;
+          background: #0b0b0b;
+          border-radius: 14px;
+          padding: 16px;
+          text-decoration: none;
+          color: ${colors.vintageCream};
+          transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+        }
+        .tile:hover {
+          transform: translateY(-2px);
+          border-color: ${colors.outlawRed};
+          box-shadow: 0 10px 24px rgba(225, 29, 46, 0.18);
+        }
+        .tile.hl {
+          border: 2px solid ${colors.outlawRed};
+          box-shadow: 0 12px 28px rgba(225, 29, 46, 0.22);
+        }
+
+        .tileHead {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+          margin-bottom: 6px;
+        }
+        h2 { margin: 0; font-size: clamp(20px, 2.6vw, 28px); }
+        .tag {
+          display: inline-block;
+          font-size: 12px;
+          letter-spacing: .3px;
+          color: ${colors.vintageCream};
+          background: ${colors.outlawRed};
+          border: 1px solid ${colors.outlawRed};
+          padding: 4px 8px;
+          border-radius: 999px;
+          white-space: nowrap;
+        }
+        .desc { margin: 8px 0 0; color: #eae3d7; line-height: 1.55; font-size: 16px; }
+
+        /* generic card used for signed-out message */
+        .card {
+          border: 1px solid #2b2b2b;
+          background: #0b0b0b;
+          border-radius: 14px;
+          padding: 16px;
+        }
+      `}</style>
+    </>
   );
 }
-
-const linkStyle = {
-  display:"block",
-  padding:"12px 14px",
-  border:"1px solid #ddd",
-  borderRadius:10,
-  background:"#fafafa",
-  textDecoration:"none",
-  color:"#111"
-};
-
-const buttonStyle = {
-  display:"inline-block",
-  padding:"10px 14px",
-  border:"1px solid #111",
-  borderRadius:10,
-  background:"#111",
-  color:"#fff",
-  cursor:"pointer"
-};

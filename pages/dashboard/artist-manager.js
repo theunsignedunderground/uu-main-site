@@ -22,10 +22,7 @@ export default function ArtistManagerPage() {
     vintageCream: "#F4E6D0",
     black: "#1C1C1C",
   };
-
-  // …rest of your component
-}
-
+  
   return (
     <>
       <Head>

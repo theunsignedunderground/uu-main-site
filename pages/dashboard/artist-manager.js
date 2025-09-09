@@ -1,18 +1,30 @@
-// pages/dashboard/artist-manager.js
 import Head from "next/head";
 import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
-import { hasEntitlement, devBypassActive } from "../../lib/entitlements";
+import { hasEntitlement } from "../../lib/entitlements";
+
+// ✅ define this helper first
+const devBypassNow = () =>
+  process.env.NEXT_PUBLIC_DEV_ENTITLEMENT_BYPASS === "1" ||
+  (typeof window !== "undefined" && localStorage.getItem("uuDevBypass") === "1");
 
 export default function ArtistManagerPage() {
   const { user } = useUser();
-  const entitled = hasEntitlement({ user, requireAnyOf: ["annual", "monthly", "fast_track"] });
-  const showDevBypass = devBypassActive();
+
+  // ✅ now you can call it here
+  const entitled =
+    devBypassNow() ||
+    hasEntitlement({ user, requireAnyOf: ["annual", "monthly", "fast_track"] });
+
+  const showDevBypass = devBypassNow();
 
   const colors = {
     outlawRed: "#871F1A",
     vintageCream: "#F4E6D0",
     black: "#1C1C1C",
   };
+
+  // …rest of your component
+}
 
   return (
     <>

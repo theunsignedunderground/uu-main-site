@@ -1,204 +1,220 @@
+// pages/faq.js
 import Head from "next/head";
-import { useState } from "react";
 
-export default function FAQPage() {
+export default function FAQ() {
+  const colors = { outlawRed: "#e11d2e", vintageCream: "#fdf5e6", black: "#000" };
+
   const faqs = [
     {
-      q: "How does this work?",
-      a: "You complete a single onboarding form with your music, images, links, and story. We build your City Showcase Site (EPK website) and prepare your press assets (feature article + press release). We publish, then amplify through our ecosystem so the right audience discovers you. You’ll be able to update your Showcase easily going forward."
+      q: "What is The Unsigned Underground in a nutshell?",
+      a: (
+        <>
+          <p>
+            We’re an artist-first platform focused on helping independent artists win locally first, then expand. Your
+            package centers on a Custom Showcase Site (your public hub/EPK), a professional PR package (press release +
+            feature article, optional interview), and guaranteed inclusion on curated playlists as we roll them out—no
+            pay-to-play.
+          </p>
+        </>
+      ),
     },
     {
-      q: "What’s included in the Artist Package?",
-      a: "City Showcase Site (EPK website), premium feature article, press release, Artist Manager access (members-only guidance/tools), and amplification across our ecosystem. See the landing page section “What’s Included…” for a concise list."
+      q: "What’s included with membership?",
+      a: (
+        <>
+          <p>
+            Custom Showcase Site, built-in EPK, embedded music player, gig calendar, photo updates, video embeds,
+            socials, and automation tools. Your PR package (press release + feature article, optional interview) and
+            curated playlist placement are included. Members also get access to the Artist Manager (guides, tools,
+            templates).
+          </p>
+        </>
+      ),
     },
     {
-      q: "How fast can my page go live?",
-      a: "First draft in a few business days after you complete onboarding and provide assets. Press items usually follow shortly after. Timelines depend on the quality/completeness of your materials and any revision cycles."
+      q: "How do the curated playlists work?",
+      a: (
+        <>
+          <p>
+            We operate state-level playlists by genre as we roll them out. Placement is included with eligible plans and
+            is never pay-to-play. You have one active track; when you release new music, use a Song Swap to replace the
+            old track so fans always hear your latest.
+          </p>
+        </>
+      ),
     },
     {
-      q: "Do I keep ownership of my music and content?",
-      a: "Yes. You retain full ownership. You grant us permission to display and promote your materials on your City Showcase Site and across our channels."
+      q: "Can I change things on my Showcase Site?",
+      a: (
+        <>
+          <p>
+            Yes. <strong>Changes handled by The Unsigned Underground are included in your membership.</strong> This
+            includes updating text/photos, schedules, and <em>adding or changing a song in your player</em>.
+          </p>
+        </>
+      ),
     },
     {
-      q: "Can I update my site after it’s live?",
-      a: "Yes. Your Showcase is designed to be easy to edit and maintain so fans and industry always see your latest music, shows, and news."
+      q: "Do you offer custom dev/design work?",
+      a: (
+        <>
+          <p>
+            <strong>Currently, The Unsigned Underground does not offer custom developer or designer services.</strong>{" "}
+            We focus on fast, high-quality updates within your Showcase and PR deliverables.
+          </p>
+        </>
+      ),
     },
     {
-      q: "Is this the same as my existing website?",
-      a: "No. A City Showcase Site is an SEO-targeted EPK website built to attract fans and industry. It complements whatever site you already have and can link both ways or use a custom domain."
+      q: "What is a Song Swap and how much does it cost?",
+      a: (
+        <>
+          <p>
+            A Song Swap replaces your current playlist track with a new release so your slot stays current. It’s a small
+            one-time fee to cover labor/automation. We regret the need to charge, but it ensures we can process swaps
+            quickly and fairly. See the Song Swap page for price and turnaround.
+          </p>
+        </>
+      ),
     },
     {
-      q: "Can I use a custom domain?",
-      a: "Yes. We can map a custom domain (e.g., yourname.com) to your Showcase, or you can link to it from your current site and socials. We’ll provide simple DNS instructions."
+      q: "I don’t want a Showcase Site—can I just buy PR + Playlists?",
+      a: (
+        <>
+          <p>
+            Yes. Choose <strong>Underground Fast Track</strong>: professional press release, feature article, optional
+            interview, and curated playlist inclusion—without a Showcase Site. You’ll still get dashboard tools and your
+            coverage on our music blog.
+          </p>
+        </>
+      ),
     },
     {
-      q: "Are there ongoing costs?",
-      a: "There is a one-time build/startup fee for your Showcase + PR package. Optional membership plans (monthly/annual) cover ongoing hosting, updates, and promotion. You will always see current options clearly at checkout."
+      q: "What’s your renewal and archive policy?",
+      a: (
+        <>
+          <p>
+            If your annual term expires unpaid, all features pause and content is archived for 30 days. Within that
+            window, you can reactivate by paying the annual renewal plus a $29.95 reactivation fee. After 30 days,
+            content is deleted and you’d re-onboard with a new annual package.
+          </p>
+        </>
+      ),
     },
     {
-      q: "What is SEO and how does it help?",
-      a: "We structure your Showcase content, metadata, and internal linking so you’re discoverable in your city and genre. That means more of the right fans—and the industry—can find you."
+      q: "Who owns my music and rights? Do you take a cut?",
+      a: (
+        <>
+          <p>
+            You keep your rights. We don’t take a percentage of royalties. We encourage proper registrations (PRO, The
+            MLC, SoundExchange) and provide guidance and templates in the Artist Manager.
+          </p>
+        </>
+      ),
     },
     {
-      q: "Can The Unsigned Underground help me release my music?",
-      a: "Yes. We provide a Music Distribution Quick Start guide (pre-release checklist aligned to DistroKid) so you can fill everything once and paste where needed. It includes best-practice tips and copy-ready metadata."
+      q: "How do I release music through UU tools?",
+      a: (
+        <>
+          <p>
+            Use our <strong>Music Distribution Quick Start</strong> checklist (mirrors distributor fields, adds tips for
+            artwork/metadata, and provides a copy-all summary). We also include an affiliate link for DistroKid if you
+            need a distributor.
+          </p>
+        </>
+      ),
     },
     {
-      q: "Do you pitch to playlists?",
-      a: "We don’t offer paid playlisting. We do amplify through our ecosystem and curated playlists as they launch region-by-region. You should still submit via Spotify for Artists and reputable curators as part of your release plan."
+      q: "Where will my article/interview appear?",
+      a: (
+        <>
+          <p>
+            On our genre music blog (magazine coverage) and on your Showcase Site’s press section. You’ll also receive
+            delivery files so you can publish on your own website and socials.
+          </p>
+        </>
+      ),
     },
     {
-      q: "Can I get support if I’m stuck?",
-      a: "Yes. We offer email support for onboarding, updates, domain mapping, and basic content questions. We’ll point you to best-practice guides and templates when it saves you time."
+      q: "Are playlists available in my state today?",
+      a: (
+        <>
+          <p>
+            We’re rolling out by state and genre. If your state’s list isn’t live yet, you’ll be queued and placed as
+            soon as it opens. Your Showcase and PR work the same either way, so you can build momentum now.
+          </p>
+        </>
+      ),
     },
     {
-      q: "Refunds and cancellations?",
-      a: "Build/startup fees cover production work that begins after onboarding, so they’re generally non-refundable once work starts. Membership can be canceled going forward via the billing portal; your current cycle remains active through its end date."
+      q: "How fast are updates and PR turnarounds?",
+      a: (
+        <>
+          <p>
+            Standard Showcase changes are quick. PR timelines depend on scope (press release vs. feature + interview).
+            We’ll confirm timing before we begin and keep you posted.
+          </p>
+        </>
+      ),
     },
     {
-      q: "What about PR/press quality—who writes the article and release?",
-      a: "Our team prepares your feature article and press release using your onboarding details, references, and links. You can request reasonable edits for accuracy and tone before publishing."
+      q: "Refunds, pauses, or cancellations?",
+      a: (
+        <>
+          <p>
+            Memberships are annual or monthly per your plan. If you need help with billing or special circumstances,
+            reach us at <a href="mailto:support@unsignedunderground.com">support@unsignedunderground.com</a> and we’ll
+            assist.
+          </p>
+        </>
+      ),
     },
-    {
-      q: "Is my data private?",
-      a: "Yes. We only use your materials to build, host, and promote your Showcase and related features. We do not sell your data. See our Privacy Policy for details."
-    },
-    {
-      q: "What happens if I lapse on membership?",
-      a: "If you pause or cancel membership, hosting and ongoing promotion may pause. You can re-activate later; we’ll restore service per the reactivation policy shown during checkout."
-    }
   ];
-
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map(({ q, a }) => ({
-      "@type": "Question",
-      name: q,
-      acceptedAnswer: { "@type": "Answer", text: a }
-    }))
-  };
 
   return (
     <>
       <Head>
         <title>FAQ — The Unsigned Underground</title>
-        <meta
-          name="description"
-          content="Answers to the most common questions about The Unsigned Underground — City Showcase Sites, PR package, timelines, ownership, domains, SEO, and more."
-        />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+        <meta name="description" content="Answers to common questions about membership, playlists, PR, Showcase changes, renewals, and more." />
       </Head>
 
-      <main style={page}>
-        {/* Simple top nav tab — mirror this in your site header later */}
-        <nav style={topNav}>
-          <a href="/" style={navLink}>Home</a>
-          <span style={{opacity:.35, padding:"0 10px"}}>•</span>
-          <a href="/faq" style={{...navLink, fontWeight:700, textDecoration:"underline"}}>FAQ</a>
-        </nav>
+      <main>
+        <section className="wrap">
+          <header className="hero">
+            <h1>Frequently Asked Questions</h1>
+            <p className="lead">
+              Start with the big picture, then dive into specifics. If you don’t see your answer here, reach us anytime.
+            </p>
+          </header>
 
-        <section style={wrap}>
-          <h1 style={{marginTop:0}}>Frequently Asked Questions</h1>
-          <p style={{color:"#666", maxWidth:860}}>
-            Browse answers to common questions about your City Showcase Site, PR package, timelines, ownership, domains, SEO, and more.
-          </p>
-
-          <div style={accordionWrap}>
+          <div className="faqs">
             {faqs.map((item, i) => (
-              <AccordionItem key={i} q={item.q} a={item.a} />
+              <details key={i} className="faq">
+                <summary>{item.q}</summary>
+                <div className="answer">{item.a}</div>
+              </details>
             ))}
-          </div>
-
-          <div style={{marginTop:24}}>
-            <a href="/" style={{textDecoration:"none", color:"#111"}}>← Back to Home</a>
           </div>
         </section>
       </main>
+
+      <style jsx>{`
+        :root { --w: 1100px; }
+        main { background: ${colors.black}; color: ${colors.vintageCream}; min-height: 100vh; }
+        .wrap { max-width: var(--w); margin: 0 auto; padding: 48px 20px 80px; }
+        .hero h1 { margin: 0 0 8px; font-size: clamp(28px, 3.4vw, 44px); line-height: 1.15; }
+        .lead { color: #f5eede; margin: 0 0 16px; font-size: clamp(16px, 1.9vw, 20px); }
+        .faqs { display: grid; gap: 12px; }
+        .faq {
+          border: 1px solid #2b2b2b; background: #0b0b0b; border-radius: 14px; padding: 12px 14px;
+        }
+        summary {
+          cursor: pointer; list-style: none; font-weight: 800; font-size: clamp(16px, 1.9vw, 20px);
+        }
+        summary::-webkit-details-marker { display: none; }
+        .answer { margin-top: 10px; line-height: 1.65; }
+        a { color: ${colors.vintageCream}; border-bottom: 1px solid ${colors.outlawRed}; text-decoration: none; }
+      `}</style>
     </>
   );
 }
-
-/* ---------- Small presentational components ---------- */
-
-function AccordionItem({ q, a }) {
-  const [open, setOpen] = useState(false);
-  const id = q.replace(/\s+/g, "-").toLowerCase();
-  return (
-    <div style={accordionItem}>
-      <button
-        onClick={() => setOpen(!open)}
-        style={accordionBtn}
-        aria-expanded={open}
-        aria-controls={id}
-      >
-        <span>{q}</span>
-        <span style={{fontWeight:700}}>{open ? "–" : "+"}</span>
-      </button>
-      {open && (
-        <div id={id} style={accordionPanel}>
-          {a}
-        </div>
-      )}
-    </div>
-  );
-}
-
-/* ---------- Styles ---------- */
-
-const page = {
-  fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif",
-  color: "#111",
-  background: "#fff"
-};
-
-const topNav = {
-  maxWidth: 1100,
-  margin: "0 auto",
-  padding: "16px 20px",
-  display: "flex",
-  alignItems: "center"
-};
-
-const navLink = {
-  color: "#111",
-  textDecoration: "none"
-};
-
-const wrap = {
-  maxWidth: 1100,
-  margin: "0 auto",
-  padding: "0 20px 40px"
-};
-
-const accordionWrap = {
-  maxWidth: 900,
-  margin: "20px auto 0",
-  display: "grid",
-  gap: 10
-};
-
-const accordionItem = {
-  border: "1px solid #eaeaea",
-  borderRadius: 10,
-  background: "#fff"
-};
-
-const accordionBtn = {
-  width: "100%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  padding: "14px 16px",
-  background: "transparent",
-  border: "none",
-  fontSize: 16,
-  textAlign: "left",
-  cursor: "pointer"
-};
-
-const accordionPanel = {
-  padding: "0 16px 14px 16px",
-  color: "#555",
-  lineHeight: 1.6
-};

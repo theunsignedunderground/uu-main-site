@@ -34,15 +34,16 @@ export default function Home() {
             media={{ src: "/media/pr-placeholder.jpg", alt: "PR & Articles example", align: "left" }}
           />
 
-          {/* Slice 3 — Grow Fans */}
-          <ValueSlice
-            eyebrow="Fan Growth"
-            title="Grow your fanbase city by city"
-            blurb="Start locally, then expand into new cities with a platform built to reach the right audience."
-            ctaLabel="Learn more"
-            ctaHref="/playlists"
-            media={{ src: "/media/growth-placeholder.jpg", alt: "Growth map / analytics", align: "right" }}
-          />
+          {/* Slice 3 — Curated Playlists */}
+<ValueSlice
+  eyebrow="Playlists"
+  title="Get heard on our own curated playlists"
+  blurb="Guaranteed inclusion on UU’s curated Spotify playlists by genre and state, no pay-to-play. Keep your spot fresh with Song Swaps when you release new music."
+  ctaLabel="Learn more"
+  ctaHref="/playlists"
+  media={{ src: "/media/playlists-placeholder.jpg", alt: "UU curated playlists preview", align: "right" }}
+/>
+
 
           {/* Slice 4 — Artist Manager */}
           <ValueSlice

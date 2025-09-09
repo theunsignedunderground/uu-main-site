@@ -4,29 +4,49 @@ import { SignedIn, SignedOut, useUser, SignOutButton } from "@clerk/nextjs";
 
 export default function Header() {
   const [open, setOpen] = useState(null); // 'features' | 'pricing' | 'profile' | null
-  const scale = 0.85;
+  const [hoverTimer, setHoverTimer] = useState(null);
+  const scale = 0.85; // baked-in scale
   const scaleVar = { ["--s"]: scale };
   const { user } = useUser();
 
-  // Prefer username → else email handle → else "Artist"
+  // Display name pref: username → email handle → "Artist"
   const displayName =
     user?.username ||
     user?.primaryEmailAddress?.emailAddress?.split("@")[0] ||
     "Artist";
 
+  // Smooth open/close helpers to remove flicker at hover seam
+  function openMenu(key) {
+    if (hoverTimer) {
+      clearTimeout(hoverTimer);
+      setHoverTimer(null);
+    }
+    setOpen(key);
+  }
+  function scheduleClose(key) {
+    if (hoverTimer) {
+      clearTimeout(hoverTimer);
+    }
+    const t = setTimeout(() => {
+      setOpen((v) => (v === key ? null : v));
+      setHoverTimer(null);
+    }, 140); // 120–160ms is a sweet spot
+    setHoverTimer(t);
+  }
+
   return (
     <header style={{ ...headerWrap, ...scaleVar }}>
       <div style={headerInner}>
-        {/* Logo */}
+        {/* Logo → Home */}
         <a href="/" style={logo}>The Unsigned Underground</a>
 
-        {/* Left nav */}
+        {/* Left / center nav (Features → Pricing → FAQ) */}
         <nav style={navRow}>
-          {/* Features */}
+          {/* Features dropdown */}
           <div
             style={navItemWrap}
-            onMouseEnter={() => setOpen("features")}
-            onMouseLeave={() => setOpen((v) => (v === "features" ? null : v))}
+            onMouseEnter={() => openMenu("features")}
+            onMouseLeave={() => scheduleClose("features")}
           >
             <button
               type="button"
@@ -38,7 +58,10 @@ export default function Header() {
               Features <span aria-hidden>▾</span>
             </button>
             {open === "features" && (
-              <div style={dropdown} onMouseEnter={() => setOpen("features")}>
+              <div
+                style={dropdown}
+                onMouseEnter={() => openMenu("features")}
+              >
                 <a href="/features" style={dropLink}>
                   <div style={dropTitle}>Showcase Site</div>
                   <div style={dropSub}>Your EPK, music, photos, shows — all in one place.</div>
@@ -59,11 +82,11 @@ export default function Header() {
             )}
           </div>
 
-          {/* Pricing */}
+          {/* Pricing dropdown */}
           <div
             style={navItemWrap}
-            onMouseEnter={() => setOpen("pricing")}
-            onMouseLeave={() => setOpen((v) => (v === "pricing" ? null : v))}
+            onMouseEnter={() => openMenu("pricing")}
+            onMouseLeave={() => scheduleClose("pricing")}
           >
             <button
               type="button"
@@ -75,7 +98,10 @@ export default function Header() {
               Pricing <span aria-hidden>▾</span>
             </button>
             {open === "pricing" && (
-              <div style={dropdown} onMouseEnter={() => setOpen("pricing")}>
+              <div
+                style={dropdown}
+                onMouseEnter={() => openMenu("pricing")}
+              >
                 <a href="/pricing#annual" style={dropLink}>
                   <div style={dropTitle}>Annual Plan</div>
                   <div style={dropSub}>Best value — one upfront payment.</div>
@@ -95,25 +121,26 @@ export default function Header() {
           <a href="/faq" style={navLinkA}>FAQ</a>
         </nav>
 
+        {/* Spacer pushes right-side actions to the far edge */}
         <div style={flexSpacer} />
 
-        {/* Right section */}
+        {/* Right actions */}
         <div style={navRight}>
-          {/* Dashboard (kept visible; route is protected) */}
+          {/* Dashboard (route is protected; you can wrap with <SignedIn> later if you want it hidden while signed out) */}
           <a href="/dashboard" style={navLinkA}>Dashboard</a>
 
-          {/* Sign In (visible until actually signed in) */}
+          {/* Auth buttons: Sign In always until signed in; Sign Up only when signed out */}
           <SignedOut>
             <a href="/sign-in" style={signInBtn}>Sign In</a>
             <a href="/sign-up" style={signUpBtn}>Sign Up</a>
           </SignedOut>
 
-          {/* Profile icon + username + dropdown (only when signed in) */}
+          {/* Profile menu (signed in only) */}
           <SignedIn>
             <div
               style={profileWrap}
-              onMouseEnter={() => setOpen("profile")}
-              onMouseLeave={() => setOpen((v) => (v === "profile" ? null : v))}
+              onMouseEnter={() => openMenu("profile")}
+              onMouseLeave={() => scheduleClose("profile")}
             >
               <button
                 type="button"
@@ -122,7 +149,7 @@ export default function Header() {
                 style={profileBtn}
                 onClick={() => setOpen(open === "profile" ? null : "profile")}
               >
-                {/* Silhouette icon in shaded circle */}
+                {/* Silhouette avatar in shaded circle */}
                 <span style={avatar}>
                   <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden>
                     <circle cx="12" cy="12" r="12" fill="#1b1b1b" />
@@ -130,11 +157,14 @@ export default function Header() {
                   </svg>
                 </span>
                 <span style={userName}>{displayName}</span>
-                <span aria-hidden style={{opacity:.8, marginLeft:6}}>▾</span>
+                <span aria-hidden style={{ opacity: 0.8, marginLeft: 6 }}>▾</span>
               </button>
 
               {open === "profile" && (
-                <div style={profileMenu} onMouseEnter={() => setOpen("profile")}>
+                <div
+                  style={profileMenu}
+                  onMouseEnter={() => openMenu("profile")}
+                >
                   <a href="/orders" style={menuLink}>My Orders</a>
                   <a href="/my-website" style={menuLink}>My Website</a>
                   <div style={menuSep} />
@@ -152,9 +182,13 @@ export default function Header() {
 }
 
 /* ---- Brand colors ---- */
-const colors = { outlawRed: "#e11d2e", vintageCream: "#fdf5e6", black: "#000" };
+const colors = {
+  outlawRed: "#e11d2e",
+  vintageCream: "#fdf5e6",
+  black: "#000000"
+};
 
-/* ---- Styles ---- */
+/* ---- Styles (responsive via clamp(...) × var(--s)) ---- */
 const headerWrap = {
   position: "sticky",
   top: 0,
@@ -181,11 +215,24 @@ const logo = {
   letterSpacing: "0.2px"
 };
 
-const navRow = { display: "flex", gap: "clamp(16px, 3vw, 36px)", alignItems: "center" };
-const flexSpacer = { flex: 1 };
-const navRight = { display: "flex", gap: "clamp(10px, 2vw, 20px)", alignItems: "center" };
+const navRow = {
+  display: "flex",
+  gap: "clamp(16px, 3vw, 36px)",
+  alignItems: "center"
+};
 
-const navItemWrap = { position: "relative", paddingBottom: 12 };
+const flexSpacer = { flex: 1 };
+
+const navRight = {
+  display: "flex",
+  gap: "clamp(10px, 2vw, 20px)",
+  alignItems: "center"
+};
+
+const navItemWrap = {
+  position: "relative",
+  paddingBottom: 16 // increased to bridge the hover seam
+};
 
 const navLinkBtn = {
   background: "transparent",
@@ -209,14 +256,14 @@ const navLinkA = {
 
 const dropdown = {
   position: "absolute",
-  top: "100%",
+  top: "calc(100% - 1px)", // overlap the seam to avoid 1px gaps
   left: 0,
   minWidth: "clamp(260px, 28vw, 420px)",
   background: "#111",
   border: `1px solid ${colors.outlawRed}`,
   borderRadius: "calc(var(--s) * 12px)",
   boxShadow: "0 10px 24px rgba(225,29,46,0.25)",
-  paddingTop: 12,
+  paddingTop: 12, // visual spacing instead of marginTop
   padding: "calc(var(--s) * clamp(10px, 1.6vw, 18px))",
   zIndex: 200
 };
@@ -268,7 +315,10 @@ const signUpBtn = {
 };
 
 /* Profile button & menu */
-const profileWrap = { position: "relative" };
+const profileWrap = {
+  position: "relative",
+  paddingBottom: 16 // bridge seam like other dropdowns
+};
 
 const profileBtn = {
   background: "transparent",
@@ -279,7 +329,7 @@ const profileBtn = {
   alignItems: "center",
   gap: 8,
   padding: "calc(var(--s) * 6px) calc(var(--s) * 10px)",
-  cursor: "pointer",
+  cursor: "pointer"
 };
 
 const avatar = {
@@ -299,14 +349,13 @@ const userName = {
 
 const profileMenu = {
   position: "absolute",
-  top: "100%",
+  top: "calc(100% - 1px)", // overlap seam to avoid flicker
   right: 0,
   minWidth: 240,
   background: "#111",
   border: `1px solid ${colors.outlawRed}`,
   borderRadius: 12,
   padding: 8,
-  marginTop: 10,
   boxShadow: "0 12px 28px rgba(225,29,46,.18)",
   zIndex: 250
 };

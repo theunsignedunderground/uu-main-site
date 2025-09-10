@@ -1,21 +1,39 @@
 // components/MemberGate.js
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { allowMemberAccess, devUnlocked } from "../lib/membership";
 
-export function MemberGate({ children, fallback }) {
+// Named export
+export function MemberGate(props) {
+  const { children, fallback } = props;
   const { isLoaded, user } = useUser();
-  const [ok, setOk] = useState(devUnlocked()); // optimistic in dev
+  const [ok, setOk] = useState(devUnlocked()); // optimistic in dev to avoid flicker
 
-  useEffect(() => {
+  useEffect(function () {
     if (!isLoaded) return;
-    setOk(allowMemberAccess(user));
+    try {
+      setOk(allowMemberAccess(user));
+    } catch (e) {
+      // On any error, be safe and show fallback unless dev is unlocked
+      setOk(devUnlocked());
+    }
   }, [isLoaded, user]);
 
-  if (!isLoaded) return null; // could swap for a spinner
-  if (!ok) return <>{fallback ?? <DefaultPaywall />}</>;
+  if (!isLoaded) return null;
+
+  if (!ok) {
+    return (
+      <>
+        {fallback ? fallback : <DefaultPaywall />}
+      </>
+    );
+  }
+
   return <>{children}</>;
 }
+
+// Also provide a default export in case you import it that way elsewhere
+export default MemberGate;
 
 function DefaultPaywall() {
   if (devUnlocked()) {
@@ -29,7 +47,7 @@ function DefaultPaywall() {
           margin: "16px 0",
         }}
       >
-        <strong>DEV UNLOCK ACTIVE</strong> — Paywall bypassed.  
+        <strong>DEV UNLOCK ACTIVE</strong> — Paywall bypassed.{" "}
         Set <code>NEXT_PUBLIC_UU_DEV_UNLOCK=0</code> to re-enable.
       </div>
     );
@@ -44,8 +62,8 @@ function DefaultPaywall() {
         textAlign: "center",
       }}
     >
-      <h1>Unlock Artist Manager</h1>
-      <p>This tool is available to Unsigned Underground members.</p>
+      <h1>Unlock Artist Tools</h1>
+      <p>These tools are available to Unsigned Underground members.</p>
       <a href="/pricing" style={{ textDecoration: "none" }}>
         View Membership Options
       </a>

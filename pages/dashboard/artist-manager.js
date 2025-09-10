@@ -1,28 +1,42 @@
+// pages/dashboard/artist-manager.js
 import Head from "next/head";
 import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
 import { hasEntitlement } from "../../lib/entitlements";
 
-// ✅ define this helper first
+/* ===== Dev bypass helper (works with env OR localStorage) ===== */
 const devBypassNow = () =>
   process.env.NEXT_PUBLIC_DEV_ENTITLEMENT_BYPASS === "1" ||
   (typeof window !== "undefined" && localStorage.getItem("uuDevBypass") === "1");
 
 export default function ArtistManagerPage() {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser(); // isLoaded helps us know when Clerk is ready
+  const [entitled, setEntitled] = useState(null); // null = computing; true/false afterwards
+  const [devBypassActive, setDevBypassActive] = useState(false);
 
-  // ✅ now you can call it here
-  const entitled =
-    devBypassNow() ||
-    hasEntitlement({ user, requireAnyOf: ["annual", "monthly", "fast_track"] });
+  // Compute entitlement on client after Clerk/user is ready
+  useEffect(() => {
+    if (!isLoaded) return; // wait for Clerk to load user/client
+    const bypass = devBypassNow();
+    const allowed =
+      bypass ||
+      hasEntitlement({ user, requireAnyOf: ["annual", "monthly", "fast_track"] });
 
-  const showDevBypass = devBypassNow();
+    setDevBypassActive(bypass);
+    setEntitled(allowed);
+
+    // Debug: see values in the browser console
+    // (Open DevTools → Console to verify)
+    // eslint-disable-next-line no-console
+    console.log("[ArtistManager] isLoaded:", isLoaded, "bypass:", bypass, "entitled:", allowed, "user:", !!user);
+  }, [isLoaded, user]);
 
   const colors = {
     outlawRed: "#871F1A",
     vintageCream: "#F4E6D0",
     black: "#1C1C1C",
   };
-  
+
   return (
     <>
       <Head>
@@ -33,50 +47,47 @@ export default function ArtistManagerPage() {
         />
       </Head>
 
-      <main>
-        {/* Signed-out fallback (middleware should gate already, this is friendly UX) */}
+      <main style={{ background: colors.black, color: colors.vintageCream, minHeight: "100vh" }}>
+        {/* Signed-out fallback (middleware should gate already) */}
         <SignedOut>
-          <section className="wrap">
-            <div className="card">
+          <section style={wrap}>
+            <div style={card}>
               <h1>Please sign in</h1>
-              <p className="lead">
+              <p style={lead}>
                 This page is for members only.{" "}
-                <a className="link" href="/sign-in">Sign in</a> to continue.
+                <a style={link(colors)} href="/sign-in">Sign in</a> to continue.
               </p>
             </div>
           </section>
         </SignedOut>
 
         <SignedIn>
-          <section className="wrap">
-            {showDevBypass && (
-              <div className="devBanner">
-                DEV bypass active — all signed-in users can view this page. Turn off by setting{" "}
-                <code>NEXT_PUBLIC_DEV_ENTITLEMENT_BYPASS=0</code>.
-              </div>
-            )}
-
-            {!entitled ? (
-              <div className="card">
-                <h1>Artist Manager</h1>
-                <p className="lead">
-                  This content is available with a UU plan. While building, enable the dev bypass or{" "}
-                  <a className="link" href="/pricing">choose a plan</a>.
-                </p>
-              </div>
-            ) : (
+          <section style={wrap}>
+            {/* Show a tiny loading state until we compute entitlement on the client */}
+            {entitled === null ? (
+              <div style={card}><p>Loading…</p></div>
+            ) : entitled ? (
               <>
-                <header className="hero">
-                  <h1>Artist Manager (Members-Only)</h1>
-                  <p className="lead">
+                {devBypassActive && (
+                  <div style={devBanner(colors)}>
+                    DEV bypass active — all signed-in users can view this page. Turn off by setting{" "}
+                    <code>NEXT_PUBLIC_DEV_ENTITLEMENT_BYPASS=0</code> or clearing <code>localStorage.uuDevBypass</code>.
+                  </div>
+                )}
+
+                <header style={{ marginBottom: 16 }}>
+                  <h1 style={{ margin: "0 0 6px", fontSize: "clamp(28px, 3.4vw, 44px)", lineHeight: 1.15 }}>
+                    Artist Manager (Members-Only)
+                  </h1>
+                  <p style={lead}>
                     A practical playbook for independent artists. Read each section once, then use it as a reference
                     before every release, show, and PR push.
                   </p>
                 </header>
 
-                {/* 1. Owning Your Career */}
-                <article className="section">
-                  <h2>Owning Your Career: The Independent Advantage</h2>
+                {/* ===================== SECTIONS ===================== */}
+                <article style={section(colors)}>
+                  <h2 style={h2}>Owning Your Career: The Independent Advantage</h2>
                   <p>
                     Independence isn’t “going it alone”—it’s keeping control of your masters, your fan relationships,
                     and your revenue paths while partnering with the right services at the right time. Your Showcase,
@@ -89,9 +100,8 @@ export default function ArtistManagerPage() {
                   </p>
                 </article>
 
-                {/* 2. From Local Hero to National Act */}
-                <article className="section">
-                  <h2>From Local Hero to National Act</h2>
+                <article style={section(colors)}>
+                  <h2 style={h2}>From Local Hero to National Act</h2>
                   <p>
                     Think in rings: hometown → nearby cities → regional circuit → national looks. Each ring demands
                     evidence—great recordings, a clean EPK, consistent socials, live clips, and a story. Release on a
@@ -104,9 +114,8 @@ export default function ArtistManagerPage() {
                   </p>
                 </article>
 
-                {/* 3. Marketing & Fan Growth */}
-                <article className="section">
-                  <h2>Marketing & Fan Growth</h2>
+                <article style={section(colors)}>
+                  <h2 style={h2}>Marketing & Fan Growth</h2>
                   <p>
                     Build loops, not one-offs. Every release should fuel: discovery (shorts/reels, local SEO), conversion
                     (Showcase + pre-save/links + email capture), and retention (updates, behind-the-scenes, gig
@@ -119,9 +128,8 @@ export default function ArtistManagerPage() {
                   </p>
                 </article>
 
-                {/* 4. Social & Content Systems */}
-                <article className="section">
-                  <h2>Social & Content Systems</h2>
+                <article style={section(colors)}>
+                  <h2 style={h2}>Social & Content Systems</h2>
                   <p>
                     Batch content once a week: 3–5 verticals (hooks, behind-the-scenes, live moments), 1–2 image posts,
                     and one longer clip. Recut performances into multiple angles; reuse audio hooks with different
@@ -133,9 +141,8 @@ export default function ArtistManagerPage() {
                   </p>
                 </article>
 
-                {/* 5. Live / Gigs / Street Team */}
-                <article className="section">
-                  <h2>Live, Gigs & Street Team</h2>
+                <article style={section(colors)}>
+                  <h2 style={h2}>Live, Gigs & Street Team</h2>
                   <p>
                     Your gig calendar is a conversion tool—fans plan around it, venues evaluate it, and press links to
                     it. Keep it current on your Showcase. Film one clean 30–60s live clip each show; those become next
@@ -148,9 +155,8 @@ export default function ArtistManagerPage() {
                   </p>
                 </article>
 
-                {/* 6. Distribution & Monetization */}
-                <article className="section">
-                  <h2>Distribution & Monetization</h2>
+                <article style={section(colors)}>
+                  <h2 style={h2}>Distribution & Monetization</h2>
                   <p>
                     Use a reputable distributor (e.g., DistroKid) and submit 2–4 weeks ahead with correct metadata.
                     Point pre-save/links to the Showcase so fans stay in your world. Monetize across streams (PRO + MLC +
@@ -162,9 +168,8 @@ export default function ArtistManagerPage() {
                   </p>
                 </article>
 
-                {/* 7. PR / Media Outreach */}
-                <article className="section">
-                  <h2>PR & Media Outreach</h2>
+                <article style={section(colors)}>
+                  <h2 style={h2}>PR & Media Outreach</h2>
                   <p>
                     Press exists to tell a story that matters to a specific audience. Start with a succinct press
                     release (what’s new, why it matters, who it’s for). Add a feature angle that deepens the story
@@ -177,9 +182,8 @@ export default function ArtistManagerPage() {
                   </p>
                 </article>
 
-                {/* 8. Legal & Contracts */}
-                <article className="section">
-                  <h2>Legal & Contracts (Independence-First)</h2>
+                <article style={section(colors)}>
+                  <h2 style={h2}>Legal & Contracts (Independence-First)</h2>
                   <p>
                     Paperwork protects relationships. Use plain-English agreements: split sheets for songs, work-for-hire
                     for paid collaborators, and a one-page show agreement when needed. Be comfortable saying “let me
@@ -191,9 +195,8 @@ export default function ArtistManagerPage() {
                   </p>
                 </article>
 
-                {/* 9. Royalties, Rights & Licensing */}
-                <article className="section">
-                  <h2>Royalties, Rights & Licensing</h2>
+                <article style={section(colors)}>
+                  <h2 style={h2}>Royalties, Rights & Licensing</h2>
                   <p>
                     Master vs. Publishing: masters are the recordings; publishing is the composition. Streams generate
                     performance (PROs like ASCAP/BMI/SESAC), mechanical (The MLC in the U.S.), and sound recording
@@ -206,9 +209,8 @@ export default function ArtistManagerPage() {
                   </p>
                 </article>
 
-                {/* 10. Music Release & Schedules */}
-                <article className="section">
-                  <h2>Music Release & Schedules</h2>
+                <article style={section(colors)}>
+                  <h2 style={h2}>Music Release & Schedules</h2>
                   <p>
                     Run 6–8 week cycles: announce, tease, pre-save, drop, post-drop content. Pair each single with
                     6–10 short clips and 2–3 live moments; pitch local media in week 1–2 and again after the drop.
@@ -221,50 +223,56 @@ export default function ArtistManagerPage() {
                   </p>
                 </article>
 
-                {/* What's Working Now */}
-                <article className="section callout">
-                  <h2>What’s Working Now</h2>
+                <article style={{ ...section(colors), borderColor: colors.outlawRed, boxShadow: "0 10px 24px rgba(135,31,26,0.25)" }}>
+                  <h2 style={h2}>What’s Working Now</h2>
                   <p>
                     We update this area with tactics that are currently effective (format shifts, platform trends,
                     outreach angles). As tactics fade, we archive them and keep high-signal ones front and center.
                   </p>
                 </article>
               </>
+            ) : (
+              <div style={card}>
+                <h1>Artist Manager</h1>
+                <p style={lead}>
+                  This content is available with a UU plan. While building, enable the dev bypass or{" "}
+                  <a style={link(colors)} href="/pricing">choose a plan</a>.
+                </p>
+              </div>
             )}
           </section>
         </SignedIn>
       </main>
-
-      <style jsx>{`
-        :root { --w: 1100px; }
-        main { background: ${colors.black}; color: ${colors.vintageCream}; min-height: 100vh; }
-        .wrap { max-width: var(--w); margin: 0 auto; padding: 48px 20px 80px; }
-        .hero h1 { margin: 0 0 8px; font-size: clamp(28px, 3.4vw, 44px); line-height: 1.15; }
-        .lead { color: ${colors.vintageCream}; opacity: 0.92; margin: 0 0 14px; font-size: clamp(16px, 1.9vw, 20px); }
-        .card { border: 1px solid #2b2b2b; background: #252525; border-radius: 14px; padding: 16px; }
-        .link { color: ${colors.vintageCream}; border-bottom: 1px solid ${colors.outlawRed}; text-decoration: none; }
-
-        .devBanner {
-          border: 1px dashed ${colors.outlawRed};
-          background: #252525;
-          color: ${colors.vintageCream};
-          border-radius: 12px;
-          padding: 10px 12px;
-          margin-bottom: 12px;
-          font-size: 14px;
-        }
-
-        .section {
-          margin-top: 22px;
-          border: 1px solid #2b2b2b;
-          background: #252525;
-          border-radius: 14px;
-          padding: 16px;
-        }
-        .section h2 { margin: 0 0 8px; font-size: clamp(20px, 2.6vw, 28px); }
-        .section p { margin: 8px 0; line-height: 1.65; }
-        .callout { border-color: ${colors.outlawRed}; box-shadow: 0 10px 24px rgba(135,31,26,0.25); }
-      `}</style>
     </>
   );
 }
+
+/* ===== tiny style helpers to match your site ===== */
+const wrap = { maxWidth: 1100, margin: "0 auto", padding: "48px 20px 80px" };
+const card = { border: "1px solid #2b2b2b", background: "#252525", borderRadius: 14, padding: 16 };
+const lead = { color: "#F4E6D0", opacity: 0.92, margin: 0, fontSize: "clamp(16px, 1.9vw, 20px)" };
+const h2 = { margin: "0 0 8px", fontSize: "clamp(20px, 2.6vw, 28px)" };
+
+const link = (colors) => ({
+  color: colors.vintageCream,
+  borderBottom: `1px solid ${colors.outlawRed}`,
+  textDecoration: "none",
+});
+
+const section = (colors) => ({
+  marginTop: 22,
+  border: "1px solid #2b2b2b",
+  background: "#252525",
+  borderRadius: 14,
+  padding: 16,
+});
+
+const devBanner = (colors) => ({
+  border: `1px dashed ${colors.outlawRed}`,
+  background: "#252525",
+  color: colors.vintageCream,
+  borderRadius: 12,
+  padding: "10px 12px",
+  marginBottom: 12,
+  fontSize: 14,
+});

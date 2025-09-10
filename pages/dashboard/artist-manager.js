@@ -9,18 +9,10 @@ const devBypassNow = () =>
   process.env.NEXT_PUBLIC_DEV_ENTITLEMENT_BYPASS === "1" ||
   (typeof window !== "undefined" && localStorage.getItem("uuDevBypass") === "1");
 
-import { MemberGate } from "@/components/MemberGate";
-
 export default function ArtistManagerPage() {
-  return (
-    <MemberGate>
-      <div style={{ padding: 24 }}>
-        <h1>Artist Manager</h1>
-        {/* ...your existing UI... */}
-      </div>
-    </MemberGate>
-  );
-}
+  const { user, isLoaded } = useUser();
+  const [entitled, setEntitled] = useState(null); // null = computing
+  const [devBypassActive, setDevBypassActive] = useState(false);
 
   useEffect(() => {
     if (!isLoaded) return; // wait for Clerk to load

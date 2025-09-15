@@ -1,30 +1,9 @@
 // pages/dashboard/artist-manager.js
 import Head from "next/head";
-import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
-import { hasEntitlement } from "../../lib/entitlements";
-
-/* Dev bypass helper: env OR localStorage */
-const devBypassNow = () =>
-  process.env.NEXT_PUBLIC_DEV_ENTITLEMENT_BYPASS === "1" ||
-  (typeof window !== "undefined" && localStorage.getItem("uuDevBypass") === "1");
+import { SignedIn, SignedOut } from "@clerk/nextjs"; // no useUser needed
+// removed: useEffect/useState and entitlements/dev bypass imports
 
 export default function ArtistManagerPage() {
-  const { user, isLoaded } = useUser();
-  const [entitled, setEntitled] = useState(null); // null = computing
-  const [devBypassActive, setDevBypassActive] = useState(false);
-
-  useEffect(() => {
-    if (!isLoaded) return; // wait for Clerk to load
-    const bypass = devBypassNow();
-    const allowed =
-      bypass ||
-      hasEntitlement({ user, requireAnyOf: ["annual", "monthly", "fast_track"] });
-
-    setDevBypassActive(bypass);
-    setEntitled(allowed);
-  }, [isLoaded, user]);
-
   const colors = {
     outlawRed: "#871F1A",
     vintageCream: "#F4E6D0",
@@ -42,43 +21,31 @@ export default function ArtistManagerPage() {
       </Head>
 
       <main style={{ background: colors.black, color: colors.vintageCream, minHeight: "100vh" }}>
-        {/* Signed-out (middleware also gates) */}
+        {/* Signed-out users see a simple sign-in prompt (no payment gate) */}
         <SignedOut>
           <section style={wrap}>
             <div style={card}>
               <h1>Please sign in</h1>
               <p style={lead}>
-                This page is for members only.{" "}
+                This page requires a free account.{" "}
                 <a style={link(colors)} href="/sign-in">Sign in</a> to continue.
               </p>
             </div>
           </section>
         </SignedOut>
 
+        {/* Signed-in users see the full page — no paywall checks */}
         <SignedIn>
           <section style={wrap}>
-            {/* Small loading state until entitlement computed */}
-            {entitled === null ? (
-              <div style={card}><p>Loading…</p></div>
-            ) : entitled ? (
-              <>
-                {devBypassActive && (
-                  <div style={devBanner(colors)}>
-                    DEV bypass active — all signed-in users can view this page. Turn off by setting{" "}
-                    <code>NEXT_PUBLIC_DEV_ENTITLEMENT_BYPASS=0</code> or clearing{" "}
-                    <code>localStorage.uuDevBypass</code>.
-                  </div>
-                )}
-
-                <header style={{ marginBottom: 16 }}>
-                  <h1 style={{ margin: "0 0 6px", fontSize: "clamp(28px, 3.4vw, 44px)", lineHeight: 1.15 }}>
-                    Artist Manager (Members-Only)
-                  </h1>
-                  <p style={lead}>
-                    A practical playbook for independent artists. Read each section once, then use it as a reference
-                    before every release, show, and PR push.
-                  </p>
-                </header>
+            <header style={{ marginBottom: 16 }}>
+              <h1 style={{ margin: "0 0 6px", fontSize: "clamp(28px, 3.4vw, 44px)", lineHeight: 1.15 }}>
+                Artist Manager
+              </h1>
+              <p style={lead}>
+                A practical playbook for independent artists. Read each section once, then use it as a reference
+                before every release, show, and PR push.
+              </p>
+            </header>
 
                 {/* ===== Sections (sample — keep expanding with your full content) ===== */}
                 <article style={section(colors)}>

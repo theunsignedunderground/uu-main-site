@@ -1,10 +1,9 @@
 // pages/manager.js
 import Head from "next/head";
-import React from "react"; 
+import React from "react";
+import colors from "../styles/colors";
 
 export default function ArtistManager() {
-  import colors from "../../styles/colors";
-
   return (
     <>
       <Head>
@@ -22,7 +21,6 @@ export default function ArtistManager() {
             Guides, tools, and templates covering PR, fan growth, gigs, distribution,
             monetization, legal, and more—designed to move you from local hero to national act.
           </p>
-          {/* Removed pricing/paywall actions during build */}
         </section>
 
         <section className="block">
@@ -55,10 +53,6 @@ export default function ArtistManager() {
           padding: clamp(40px, 6vw, 80px) clamp(20px, 4vw, 40px); border-bottom: 2px solid ${colors.outlawRed}; }
         .hero h1 { font-size: clamp(34px, 4.2vw, 56px); line-height: 1.12; margin: 0 0 10px; }
         .hero p { font-size: clamp(18px, 2vw, 22px); line-height: 1.55; max-width: 860px; margin: 0 auto 18px; color: #f5eede; }
-        .actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-        .btn { font-size: clamp(16px, 1.8vw, 20px); padding: 12px 18px; border-radius: 12px; text-decoration:none; }
-        .btn.solid { background:${colors.outlawRed}; color:${colors.vintageCream}; border:2px solid ${colors.outlawRed}; }
-        .btn.outline { color:${colors.vintageCream}; border:2px solid ${colors.outlawRed}; }
         .block { max-width:1100px; margin:0 auto; padding: clamp(44px, 6vw, 72px) clamp(20px, 4vw, 40px); }
         .block h2 { font-size: clamp(26px, 3vw, 40px); margin: 0 0 12px; }
         .block h3 { font-size: clamp(22px, 2.6vw, 32px); margin: 0 0 10px; }

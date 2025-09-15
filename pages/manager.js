@@ -3,7 +3,7 @@ import Head from "next/head";
 import React from "react"; 
 
 export default function ArtistManager() {
-  const colors = { outlawRed: "#e11d2e", vintageCream: "#fdf5e6", black: "#000" };
+  import colors from "../../styles/colors";
 
   return (
     <>

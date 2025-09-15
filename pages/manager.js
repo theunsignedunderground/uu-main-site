@@ -8,15 +8,17 @@ export default function ArtistManager() {
         <meta name="description" content="Guides, tools, and templates across release strategy, PR, gigs, distribution, monetization, and more—members only." />
       </Head>
 
-      <main>
-        <section className="hero">
-          <h1>Artist Manager (Members-Only)</h1>
-          <p>Guides, tools, and templates covering PR, fan growth, gigs, distribution, monetization, legal, and more—designed to move you from local hero to national act.</p>
-          <div className="actions">
-            <a className="btn solid" href="/pricing#annual">Unlock with Full Package</a>
-            <a className="btn outline" href="/pricing#monthly">Unlock Monthly</a>
-          </div>
-        </section>
+    <main>
+  <section className="hero">
+    <h1>Artist Manager</h1>
+    <p>
+      Guides, tools, and templates covering PR, fan growth, gigs, distribution,
+      monetization, legal, and more—designed to move you from local hero to national act.
+    </p>
+    {/* Removed pricing/paywall actions during build */}
+  </section>
+  {/* ...rest of page... */}
+</main>
 
         <section className="block">
           <h2>Core categories at launch</h2>

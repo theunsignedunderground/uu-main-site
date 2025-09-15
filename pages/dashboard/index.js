@@ -1,9 +1,9 @@
 // pages/dashboard/index.js
 import Head from "next/head";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
+import colors from "../../styles/colors";
 
 export default function Dashboard() {
-  const colors = { outlawRed: "#e11d2e", vintageCream: "#fdf5e6", black: "#000" };
 
   const tiles = [
     {

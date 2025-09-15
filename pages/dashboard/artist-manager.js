@@ -47,6 +47,9 @@ export default function ArtistManagerPage() {
               </p>
             </header>
 
+            {/* ---- Your existing sections/content continue below unchanged ---- */}
+
+
                 {/* ===== Sections (sample — keep expanding with your full content) ===== */}
                 <article style={section(colors)}>
                   <h2 style={h2}>Owning Your Career: The Independent Advantage</h2>

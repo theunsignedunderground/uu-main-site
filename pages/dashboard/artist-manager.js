@@ -3,7 +3,7 @@ import Head from "next/head";
 import React from "react";
 
 export default function ArtistManagerPage() {
-  const colors = { outlawRed: "#e11d2e", vintageCream: "#fdf5e6", black: "#000" };
+  const colors = { outlawRed: "#871F1A", vintageCream: "#F4E6D0", black: "1C1C1C" };
 
   return (
     <>
@@ -65,7 +65,7 @@ export default function ArtistManagerPage() {
           line-height: 1.55;
           max-width: 860px;
           margin: 0 auto 18px;
-          color: #f5eede;
+          color: #871F1A;
         }
         .block { max-width:1100px; margin:0 auto; padding: clamp(44px, 6vw, 72px) clamp(20px, 4vw, 40px); }
         .block h2 { font-size: clamp(26px, 3vw, 40px); margin: 0 0 12px; }

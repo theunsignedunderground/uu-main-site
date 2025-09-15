@@ -14,6 +14,8 @@ export default function ArtistManager() {
         />
       </Head>
 
+<a className="btn solid" href="/dashboard/artist-manager">Open Artist Manager</a>
+            
       <main>
         <section className="hero">
           <h1>Artist Manager</h1>

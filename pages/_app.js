@@ -1,4 +1,5 @@
 // pages/_app.js
+import React from "react";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "../components/Header";
 

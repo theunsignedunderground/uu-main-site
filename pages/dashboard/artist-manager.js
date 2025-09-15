@@ -1,14 +1,9 @@
 // pages/dashboard/artist-manager.js
 import Head from "next/head";
-import { SignedIn, SignedOut } from "@clerk/nextjs"; // no useUser needed
-// removed: useEffect/useState and entitlements/dev bypass imports
+import React from "react";
 
 export default function ArtistManagerPage() {
-  const colors = {
-    outlawRed: "#871F1A",
-    vintageCream: "#F4E6D0",
-    black: "#1C1C1C",
-  };
+  const colors = { outlawRed: "#e11d2e", vintageCream: "#fdf5e6", black: "#000" };
 
   return (
     <>
@@ -16,113 +11,76 @@ export default function ArtistManagerPage() {
         <title>Artist Manager — The Unsigned Underground</title>
         <meta
           name="description"
-          content="In-depth guidance for independent artists: growth systems, release schedules, PR, distribution, royalties, legal, gigs, and more."
+          content="Guides, tools, and templates covering PR, fan growth, gigs, distribution, monetization, legal, and more—designed to move you from local hero to national act."
         />
       </Head>
 
-      <main style={{ background: colors.black, color: colors.vintageCream, minHeight: "100vh" }}>
-        {/* Signed-out users see a simple sign-in prompt (no payment gate) */}
-        <SignedOut>
-          <section style={wrap}>
-            <div style={card}>
-              <h1>Please sign in</h1>
-              <p style={lead}>
-                This page requires a free account.{" "}
-                <a style={link(colors)} href="/sign-in">Sign in</a> to continue.
-              </p>
-            </div>
-          </section>
-        </SignedOut>
+      <main>
+        <section className="hero">
+          <h1>Artist Manager</h1>
+          <p>
+            A practical playbook for independent artists. Read each section once, then use it as a reference
+            before every release, show, and PR push.
+          </p>
+          {/* No paywall buttons during build */}
+        </section>
 
-        {/* Signed-in users see the full page — no paywall checks */}
-        <SignedIn>
-          <section style={wrap}>
-            <header style={{ marginBottom: 16 }}>
-              <h1 style={{ margin: "0 0 6px", fontSize: "clamp(28px, 3.4vw, 44px)", lineHeight: 1.15 }}>
-                Artist Manager
-              </h1>
-              <p style={lead}>
-                A practical playbook for independent artists. Read each section once, then use it as a reference
-                before every release, show, and PR push.
-              </p>
-            </header>
+        <section className="block">
+          <h2>Core categories at launch</h2>
+          <ul className="list">
+            <li>Marketing & Fan Growth • Social & Content Systems</li>
+            <li>Live/Gigs/Street Team • Music Release & Schedules</li>
+            <li>Distribution & Monetization • PR/Media Outreach</li>
+            <li>Legal & Contracts • Royalties, Rights & Licensing</li>
+          </ul>
+        </section>
 
-            {/* ---- Your existing sections/content continue below unchanged ---- */}
+        <section className="block">
+          <h3>What you’ll find inside</h3>
+          <ul className="list">
+            <li>Step-by-step checklists and timelines (pre-release → post-release)</li>
+            <li>Templates: split sheets, metadata sheets, outreach emails</li>
+            <li>“What’s Working Now” tactics, updated as trends shift</li>
+          </ul>
+        </section>
 
-
-                {/* ===== Sections (sample — keep expanding with your full content) ===== */}
-                <article style={section(colors)}>
-                  <h2 style={h2}>Owning Your Career: The Independent Advantage</h2>
-                  <p>
-                    Independence isn’t “going it alone”—it’s keeping control of your masters, your fan relationships,
-                    and your revenue paths while partnering with the right services at the right time. Your Showcase,
-                    PR, and playlists exist to turn every song, video, and show into momentum you own: email list growth,
-                    repeat visitors, and playlist saves that compound.
-                  </p>
-                  <p>
-                    Your north star is <em>community first</em>. Win your city, then expand to nearby cities and
-                    state-level playlists. The systems below are built around that sequence.
-                  </p>
-                </article>
-
-                <article style={section(colors)}>
-                  <h2 style={h2}>From Local Hero to National Act</h2>
-                  <p>
-                    Think in rings: hometown → nearby cities → regional circuit → national looks. Each ring demands
-                    evidence—great recordings, a clean EPK, consistent socials, live clips, and a story. Release on a
-                    schedule, pitch locally, capture emails at shows, and use Song Swaps to keep your playlist slot
-                    current as you level up.
-                  </p>
-                  <p>
-                    Track outcomes weekly: email list, followers, saves/streams, show offers. When metrics trend up in
-                    one ring, allocate more effort to the next. Momentum is your investor.
-                  </p>
-                </article>
-
-                {/* (Continue with the rest of the in-depth sections you approved) */}
-              </>
-            ) : (
-              <div style={card}>
-                <h1>Artist Manager</h1>
-                <p style={lead}>
-                  This content is available with a UU plan. While building, enable the dev bypass or{" "}
-                  <a style={link(colors)} href="/pricing">choose a plan</a>.
-                </p>
-              </div>
-            )}
-          </section>
-        </SignedIn>
+        <section className="block">
+          <div className="mock">Dashboard preview / sections go here</div>
+        </section>
       </main>
+
+      <style jsx>{`
+        main { color: ${colors.vintageCream}; background: ${colors.black}; min-height: 100vh; }
+        .hero {
+          min-height: 60vh;
+          display: grid;
+          place-items: center;
+          text-align: center;
+          padding: clamp(40px, 6vw, 80px) clamp(20px, 4vw, 40px);
+          border-bottom: 2px solid ${colors.outlawRed};
+        }
+        .hero h1 { font-size: clamp(34px, 4.2vw, 56px); line-height: 1.12; margin: 0 0 10px; }
+        .hero p {
+          font-size: clamp(18px, 2vw, 22px);
+          line-height: 1.55;
+          max-width: 860px;
+          margin: 0 auto 18px;
+          color: #f5eede;
+        }
+        .block { max-width:1100px; margin:0 auto; padding: clamp(44px, 6vw, 72px) clamp(20px, 4vw, 40px); }
+        .block h2 { font-size: clamp(26px, 3vw, 40px); margin: 0 0 12px; }
+        .block h3 { font-size: clamp(22px, 2.6vw, 32px); margin: 0 0 10px; }
+        .list { font-size: clamp(18px, 2vw, 20px); line-height: 1.6; padding-left: 1.1em; }
+        .list li + li { margin-top: 8px; }
+        .mock {
+          height: clamp(220px, 40vw, 420px);
+          border: 2px dashed ${colors.outlawRed};
+          border-radius:14px;
+          display:grid;
+          place-items:center;
+          opacity:.9;
+        }
+      `}</style>
     </>
   );
 }
-
-/* ===== tiny style helpers to match your site ===== */
-const wrap = { maxWidth: 1100, margin: "0 auto", padding: "48px 20px 80px" };
-const card = { border: "1px solid #2b2b2b", background: "#252525", borderRadius: 14, padding: 16 };
-const lead = { color: "#F4E6D0", opacity: 0.92, margin: 0, fontSize: "clamp(16px, 1.9vw, 20px)" };
-const h2 = { margin: "0 0 8px", fontSize: "clamp(20px, 2.6vw, 28px)" };
-
-const link = (colors) => ({
-  color: colors.vintageCream,
-  borderBottom: `1px solid ${colors.outlawRed}`,
-  textDecoration: "none",
-});
-
-const section = (colors) => ({
-  marginTop: 22,
-  border: "1px solid #2b2b2b",
-  background: "#252525",
-  borderRadius: 14,
-  padding: 16,
-});
-
-const devBanner = (colors) => ({
-  border: `1px dashed ${colors.outlawRed}`,
-  background: "#252525",
-  color: colors.vintageCream,
-  borderRadius: 12,
-  padding: "10px 12px",
-  marginBottom: 12,
-  fontSize: 14,
-});

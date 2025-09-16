@@ -1,6 +1,7 @@
 // components/Header.js
 import { useState } from "react";
 import { SignedIn, SignedOut, useUser, SignOutButton } from "@clerk/nextjs";
+import Logo from "./Logo";
 
 export default function Header() {
   const [open, setOpen] = useState(null); // 'features' | 'pricing' | 'profile' | null
@@ -38,7 +39,9 @@ export default function Header() {
     <header style={{ ...headerWrap, ...scaleVar }}>
       <div style={headerInner}>
         {/* Logo → Home */}
-        <a href="/" style={logo}>The Unsigned Underground</a>
+        <a href="/" style={logo}>
+  <Logo variant="light" type="logo" width={200} height={48} alt="The Unsigned Underground" />
+</a>
 
         {/* Left / center nav (Features → Pricing → FAQ) */}
         <nav style={navRow}>

@@ -24,10 +24,9 @@ export default function PRAndArticlesPage() {
             then publishes to a genre-specific Music Magazine blog to amplify your reach.
           </p>
 
-          {/* CTAs you liked (kept same style) */}
+          {/* ✅ Single CTA only */}
           <div className="actions">
             <a className="btn solid" href="/pricing">See Packages & Pricing</a>
-            <a className="btn outline" href="/artist-manager">Learn More About Our System</a>
           </div>
         </section>
 
@@ -44,8 +43,6 @@ export default function PRAndArticlesPage() {
             <li><strong>How it levels you up:</strong> Clear narrative + quotes + links = more pickups, better first impressions.</li>
             <li><strong>Where it goes:</strong> Your City Showcase Site, social posts, email blast, and your press folder for future pitches.</li>
           </ul>
-
-          {/* Placeholder area for screenshots (no icons per your guidance) */}
           <div className="mock">[Screenshot placeholder: Press Release sample]</div>
         </section>
 
@@ -93,33 +90,32 @@ export default function PRAndArticlesPage() {
           <div className="mock">[Screenshot placeholder: Blog index + article page]</div>
         </section>
 
-        {/* What’s Included / Deliverables */}
+        {/* Deliverables */}
         <section className="block">
           <h2>What’s Included</h2>
           <ul className="list">
-            <li>Professional writing/editing by The Unsigned Underground Team (no AI mentioned; we do the interview).</li>
+            <li>Professional writing/editing by The Unsigned Underground Team (we do the interview, no AI mention).</li>
             <li>Publication on your genre’s UU Music Magazine blog when applicable.</li>
             <li>Cross-linking with your City Showcase Site (press room section).</li>
             <li>Ready-to-use assets (PDF/Doc for press release, shareable blog link for article/interview).</li>
           </ul>
         </section>
 
-        {/* How It Works */}
+        {/* Process */}
         <section className="block">
           <h2>How It Works</h2>
           <ol className="steps">
-            <li><strong>Kickoff:</strong> You provide your release details, photos, links, and notes.</li>
+            <li><strong>Kickoff:</strong> You provide release details, photos, links, and notes.</li>
             <li><strong>Draft:</strong> We craft your piece (press release, article, or interview Q&A) and send for approval.</li>
             <li><strong>Publish:</strong> We publish to the genre blog (as applicable) and add it to your Showcase press room.</li>
             <li><strong>Promote:</strong> You share the link across socials, email, and pitches.</li>
           </ol>
         </section>
 
-        {/* Final CTA row */}
+        {/* Final CTA */}
         <section className="block cta">
           <div className="ctaWrap">
             <a className="btn solid" href="/pricing">Choose Your PR Package</a>
-            <a className="btn outline" href="/artist-manager">See How It Fits Your Plan</a>
           </div>
         </section>
       </main>
@@ -132,17 +128,18 @@ export default function PRAndArticlesPage() {
           border-bottom: 2px solid ${colors.outlawRed};
         }
         .lede { max-width: 900px; margin: 0 auto; opacity: 0.95; }
-        .actions { margin-top: 16px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+        .actions { margin-top: 16px; display:flex; justify-content:center; }
         .btn {
           font-size: clamp(16px, 1.8vw, 20px);
           padding: 12px 18px; border-radius: 12px; text-decoration:none;
           border: 2px solid ${colors.outlawRed}; color: ${colors.vintageCream};
+          background: ${colors.outlawRed};
           transition: all 0.15s ease;
         }
-        .btn.solid { background: ${colors.outlawRed}; }
-        .btn.solid:hover { background: transparent; }
-        .btn.outline { background: transparent; }
-        .btn.outline:hover { background: ${colors.outlawRed}; }
+        .btn:hover {
+          background: transparent;
+          color: ${colors.vintageCream};
+        }
 
         .block { max-width:1100px; margin:0 auto; padding: clamp(44px, 6vw, 72px) clamp(20px, 4vw, 40px); }
         h2 { font-size: clamp(26px, 3vw, 40px); margin: 0 0 12px; }
@@ -168,8 +165,7 @@ export default function PRAndArticlesPage() {
           display: grid; place-items: center; font-size: 12px;
         }
 
-        .cta { padding-top: 0; }
-        .ctaWrap { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+        .ctaWrap { display:flex; justify-content:center; }
       `}</style>
     </>
   );

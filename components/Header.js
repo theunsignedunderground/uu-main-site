@@ -1,7 +1,6 @@
 // components/Header.js
 import { useState } from "react";
 import { SignedIn, SignedOut, useUser, SignOutButton } from "@clerk/nextjs";
-import Logo from "./Logo";
 import colors from "../styles/colors";
 
 export default function Header() {
@@ -40,13 +39,13 @@ export default function Header() {
     <header style={{ ...headerWrap, ...scaleVar }}>
       <div style={headerInner}>
         {/* Logo → Home */}
-        <a href="/" style={logo}>
-  <Logo
-    variant="light"
-    type="logo"
-    width={200}
-    height={48}
+       <a href="/" style={logo}>
+  <img
+    src="/brand/logos/TheUnsignedUnderground-OnBlack.svg"
+    width="200"
+    height="48"
     alt="The Unsigned Underground"
+    style={{ display: "block" }}
   />
 </a>
 
@@ -128,8 +127,9 @@ export default function Header() {
             )}
           </div>
 
-          <a href="/faq" style={navLinkA}>FAQ</a>
-        </nav>
+        <div style={navItemWrap}>
+  <a href="/faq" style={navLinkBtn}>FAQ</a>
+</div>
 
         {/* Spacer pushes right-side actions to the far edge */}
         <div style={flexSpacer} />
@@ -210,14 +210,6 @@ const headerInner = {
   gap: "clamp(16px, 2.5vw, 32px)"
 };
 
-const logo = {
-  textDecoration: "none",
-  color: colors.vintageCream,
-  fontWeight: 800,
-  fontSize: "calc(var(--s) * clamp(20px, 2.4vw, 30px))",
-  letterSpacing: "0.2px"
-};
-
 const navRow = {
   display: "flex",
   gap: "clamp(16px, 3vw, 36px)",
@@ -236,20 +228,6 @@ const navItemWrap = {
   position: "relative",
   paddingBottom: 16 // increased to bridge the hover seam
 };
-
-const navLinkBase = {
-  display: "inline-flex",
-  alignItems: "center",
-  textDecoration: "none",
-  color: colors.vintageCream,
-  fontSize: "calc(var(--s) * clamp(16px, 1.8vw, 22px))",
-  lineHeight: 1.25,
-  padding: "calc(var(--s) * clamp(8px, 1.3vw, 14px)) calc(var(--s) * clamp(10px, 2vw, 18px))",
-  borderRadius: "calc(var(--s) * 12px)",
-};
-
-const navLinkA  = { ...navLinkBase };                           // for <a>
-const navLinkBtn = { ...navLinkBase, background: "transparent", border: "none", cursor: "pointer" }; // for <button>
 
 const dropdown = {
   position: "absolute",

@@ -3,7 +3,7 @@ import Head from "next/head";
 import React from "react";
 import colors from "../styles/colors";
 
-export default function ArtistManager() {
+export default function ManagerMarketingPage() {
   return (
     <>
       <Head>
@@ -14,8 +14,6 @@ export default function ArtistManager() {
         />
       </Head>
 
-<a className="btn solid" href="/dashboard/artist-manager">Open Artist Manager</a>
-            
       <main>
         <section className="hero">
           <h1>Artist Manager</h1>
@@ -23,6 +21,13 @@ export default function ArtistManager() {
             Guides, tools, and templates covering PR, fan growth, gigs, distribution,
             monetization, legal, and more—designed to move you from local hero to national act.
           </p>
+
+          {/* ✅ CTA to pricing page */}
+          <div className="actions">
+            <a className="btn solid" href="/pricing">
+              Unlock Artist Manager
+            </a>
+          </div>
         </section>
 
         <section className="block">
@@ -51,10 +56,31 @@ export default function ArtistManager() {
 
       <style jsx>{`
         main { color: ${colors.vintageCream}; background: ${colors.black}; }
-        .hero { min-height: 88vh; display: grid; place-items: center; text-align: center;
-          padding: clamp(40px, 6vw, 80px) clamp(20px, 4vw, 40px); border-bottom: 2px solid ${colors.outlawRed}; }
+        .hero {
+          min-height: 70vh; display: grid; place-items: center; text-align: center;
+          padding: clamp(40px, 6vw, 80px) clamp(20px, 4vw, 40px);
+          border-bottom: 2px solid ${colors.outlawRed};
+        }
         .hero h1 { font-size: clamp(34px, 4.2vw, 56px); line-height: 1.12; margin: 0 0 10px; }
         .hero p { font-size: clamp(18px, 2vw, 22px); line-height: 1.55; max-width: 860px; margin: 0 auto 18px; color: #f5eede; }
+
+        /* ✅ CTA styles */
+        .actions { margin-top: 16px; display:flex; justify-content:center; }
+        .btn {
+          font-size: clamp(16px, 1.8vw, 20px);
+          padding: 12px 18px;
+          border-radius: 12px;
+          text-decoration:none;
+          border: 2px solid ${colors.outlawRed};
+          color: ${colors.vintageCream};
+          background: ${colors.outlawRed};
+          transition: all 0.15s ease;
+        }
+        .btn:hover {
+          background: transparent;
+          color: ${colors.vintageCream};
+        }
+
         .block { max-width:1100px; margin:0 auto; padding: clamp(44px, 6vw, 72px) clamp(20px, 4vw, 40px); }
         .block h2 { font-size: clamp(26px, 3vw, 40px); margin: 0 0 12px; }
         .block h3 { font-size: clamp(22px, 2.6vw, 32px); margin: 0 0 10px; }

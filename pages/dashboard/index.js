@@ -28,7 +28,7 @@ export default function Dashboard() {
       desc: "Learn how placements work and best practices to grow saves.",
     },
     {
-      href: "/manager",
+     href: "/dashboard/artist-manager",
       title: "Artist Manager",
       desc: "Guides, tools, and templates to level up your release cycle.",
     },

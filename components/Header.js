@@ -1,7 +1,8 @@
 // components/Header.js
 import { useState } from "react";
 import { SignedIn, SignedOut, useUser, SignOutButton } from "@clerk/nextjs";
-import Logo from "./Logo";
+import Logo from "./logo";
+import colors from "../styles/colors";
 
 export default function Header() {
   const [open, setOpen] = useState(null); // 'features' | 'pricing' | 'profile' | null
@@ -40,7 +41,13 @@ export default function Header() {
       <div style={headerInner}>
         {/* Logo → Home */}
         <a href="/" style={logo}>
-  <Logo variant="light" type="logo" width={200} height={48} alt="The Unsigned Underground" />
+  <Logo
+    variant="light"
+    type="logo"
+    width={200}
+    height={48}
+    alt="The Unsigned Underground"
+  />
 </a>
 
         {/* Left / center nav (Features → Pricing → FAQ) */}
@@ -184,13 +191,6 @@ export default function Header() {
   );
 }
 
-/* ---- Brand colors ---- */
-const colors = {
-  outlawRed: "#e11d2e",
-  vintageCream: "#fdf5e6",
-  black: "#000000"
-};
-
 /* ---- Styles (responsive via clamp(...) × var(--s)) ---- */
 const headerWrap = {
   position: "sticky",
@@ -237,25 +237,19 @@ const navItemWrap = {
   paddingBottom: 16 // increased to bridge the hover seam
 };
 
-const navLinkBtn = {
-  background: "transparent",
-  border: "none",
-  color: colors.vintageCream,
-  cursor: "pointer",
-  fontSize: "calc(var(--s) * clamp(16px, 1.8vw, 22px))",
-  padding: "calc(var(--s) * clamp(8px, 1.3vw, 14px)) calc(var(--s) * clamp(10px, 2vw, 18px))",
-  lineHeight: 1.25,
-  borderRadius: "calc(var(--s) * 12px)"
-};
-
-const navLinkA = {
+const navLinkBase = {
+  display: "inline-flex",
+  alignItems: "center",
   textDecoration: "none",
   color: colors.vintageCream,
   fontSize: "calc(var(--s) * clamp(16px, 1.8vw, 22px))",
-  padding: "calc(var(--s) * clamp(8px, 1.3vw, 14px)) calc(var(--s) * clamp(10px, 2vw, 18px))",
   lineHeight: 1.25,
-  borderRadius: "calc(var(--s) * 12px)"
+  padding: "calc(var(--s) * clamp(8px, 1.3vw, 14px)) calc(var(--s) * clamp(10px, 2vw, 18px))",
+  borderRadius: "calc(var(--s) * 12px)",
 };
+
+const navLinkA  = { ...navLinkBase };                           // for <a>
+const navLinkBtn = { ...navLinkBase, background: "transparent", border: "none", cursor: "pointer" }; // for <button>
 
 const dropdown = {
   position: "absolute",

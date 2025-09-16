@@ -1,7 +1,7 @@
 // components/Header.js
 import { useState } from "react";
 import { SignedIn, SignedOut, useUser, SignOutButton } from "@clerk/nextjs";
-import Logo from "./logo";
+import Logo from "./Logo";
 import colors from "../styles/colors";
 
 export default function Header() {

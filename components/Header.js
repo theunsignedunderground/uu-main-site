@@ -53,17 +53,20 @@ export default function Header() {
     position: "absolute",
     left: 0,
     bottom: 0,
-    width: 1,
-    height: Math.max(HEADER_HEIGHT * 0.5, 36),
-    background: colors.outlawRed,
+    width: 2,
+    height: HEADER_HEIGHT / 2, 
+  background: colors.outlawRed,
     opacity: 0.95,
-  };
-  const logoDividerLine = {
-    ...dividerLine,
-    top: 0,
-    bottom: 0,
-    height: "100%", // full height for logo divider
-  };
+};
+  
+ const logoDividerLine = {
+  position: "absolute",
+  top: 0,
+  bottom: 0,
+  left: 0,
+  width: 2,
+  background: colors.outlawRed,
+};
 
   const navRow = {
     display: "flex",
@@ -190,7 +193,10 @@ export default function Header() {
     );
   };
 
-  const noRealPhoto = !user?.imageUrl || user?.imageUrl.includes("default-avatar");
+ const noRealPhoto =
+  !user?.imageUrl ||
+  user.imageUrl.includes("default-avatar") ||
+  user.imageUrl.includes("clerk"); // catch Clerk stock assets
 
   return (
     <header style={headerWrap}>

@@ -4,13 +4,14 @@ import { SignedIn, SignedOut, SignInButton, useClerk, useUser } from "@clerk/nex
 import colors from "../styles/colors";
 
 /**
- * Header (restored classic structure + fixes):
- * - Brand colors via styles/colors
- * - Larger logo (SVG) with wider header spacing
- * - Uniform nav styles (Features / Pricing / FAQ / Dashboard)
- * - Features dropdown (Artist Manager, City Showcase, Playlists, PR)
- * - Mouse enter/leave for dropdowns (no flicker)
- * - Custom avatar menu (Dashboard, My Orders, My Website, Sign out)
+ * Header (classic layout + requested refinements)
+ * - Brand colors from styles/colors
+ * - Larger SVG logo
+ * - Uniform nav typography (Features / Pricing / FAQ / Dashboard)
+ * - Dashboard moved to right group next to profile
+ * - Thin Outlaw Red border around header + vertical dividers rising from bottom ~50%
+ * - Features dropdown separators (thin Outlaw Red lines)
+ * - Avatar button ring uses brand colors; Sign Out matches menu item styles
  */
 
 export default function Header() {
@@ -31,52 +32,86 @@ export default function Header() {
     }, delay);
   };
 
-  // --- styles ---
+  // --- layout & style ---
+  const HEADER_HEIGHT = 70; // px visible area (approx for divider height calc)
+
   const headerWrap = {
     position: "sticky",
     top: 0,
     zIndex: 60,
     background: colors.black,
-    borderBottom: "1px solid #2a2a2a",
+    // full red border around header
+    border: `1px solid ${colors.outlawRed}`,
+    borderLeft: `1px solid ${colors.outlawRed}`,
+    borderRight: `1px solid ${colors.outlawRed}`,
   };
 
   const container = {
     maxWidth: 1200,
     margin: "0 auto",
-    padding: "14px 18px", // a hair taller so the logo can breathe
+    padding: "12px 18px",
     display: "grid",
     gridTemplateColumns: "auto 1fr auto",
     alignItems: "center",
     columnGap: 16,
+    minHeight: HEADER_HEIGHT,
+    position: "relative",
   };
 
-  const logoLink = { display: "inline-block", lineHeight: 0 };
-  const logoImg = { display: "block", width: 240, height: "auto" }; // larger logo visibility
+  // LOGO
+  const logoLink = { display: "inline-block", lineHeight: 0, position: "relative" };
+  const logoImg = { display: "block", width: 240, height: "auto" }; // bigger per request
 
+  // NAV (center-left cluster: Features, Pricing, FAQ)
   const navRow = {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    gap: 12,
+    justifyContent: "flex-start", // shift left
+    gap: 16, // more spacing between tabs
     flexWrap: "wrap",
+    position: "relative",
   };
 
-  const navItemWrap = { position: "relative", display: "inline-flex", alignItems: "center" };
+  // NAV item wrapper
+  const navItemWrap = {
+    position: "relative",
+    display: "inline-flex",
+    alignItems: "center",
+  };
 
-  // unified nav look (anchors + buttons share this)
+  // Divider: a thin vertical line rising from bottom ~50% height
+  const divider = {
+    position: "relative",
+    paddingLeft: 16,
+    marginLeft: 16,
+  };
+  const dividerLine = {
+    content: '""',
+    position: "absolute",
+    left: 0,
+    bottom: -1, // sit on top of header bottom border visually
+    width: 1,
+    height: Math.max(HEADER_HEIGHT * 0.5, 28),
+    background: colors.outlawRed,
+    opacity: 0.9,
+  };
+
+  // Unified nav look (anchors & buttons share this)
+  const navFont = "clamp(17px, 2vw, 19px)"; // bumped slightly larger
   const navLinkBase = {
     display: "inline-flex",
     alignItems: "center",
     textDecoration: "none",
     color: colors.vintageCream,
-    fontSize: "clamp(16px, 1.8vw, 18px)",
+    fontSize: navFont,
     lineHeight: 1.25,
-    padding: "10px 14px",
+    padding: "10px 16px",
     borderRadius: 12,
     border: "1px solid #2a2a2a",
     background: "transparent",
     cursor: "pointer",
     transition: "background 140ms ease, border-color 140ms ease, color 140ms ease",
+    whiteSpace: "nowrap",
   };
   const applyHover = (el) => {
     if (!el) return;
@@ -91,11 +126,12 @@ export default function Header() {
     el.style.color = colors.vintageCream;
   };
 
+  // Dropdown panel & items (with thin red separators)
   const dropdownPanel = {
     position: "absolute",
     top: "calc(100% + 6px)",
     left: 0,
-    minWidth: 260,
+    minWidth: 280,
     background: "#121212",
     border: "1px solid #2a2a2a",
     borderRadius: 12,
@@ -103,54 +139,74 @@ export default function Header() {
     padding: 8,
     zIndex: 99,
   };
+
   const dropdownItem = {
     ...navLinkBase,
     display: "block",
     width: "100%",
     textAlign: "left",
     border: "none",
-    padding: "10px 12px",
+    padding: "12px 14px",
   };
+  const separatorTop = { borderTop: `1px solid ${colors.outlawRed}` }; // add to items after the first
 
-  const rightWrap = { display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 10 };
+  // RIGHT: Dashboard + Auth
+  const rightWrap = { display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 12 };
+
+  const dashboardLink = { ...navLinkBase };
+
   const signInBtn = { ...navLinkBase, borderColor: colors.outlawRed };
 
-  // avatar button + menu
+  // Avatar (profile) button uses brand colors for ring
   const avatarBtn = {
     ...navLinkBase,
     padding: 4,
     borderRadius: 999,
-    borderColor: "#2a2a2a",
+    borderColor: colors.outlawRed, // brand ring
     gap: 8,
   };
   const avatarImg = {
     width: 36,
     height: 36,
     borderRadius: 999,
-    border: "1px solid #2a2a2a",
+    border: `1px solid ${colors.outlawRed}`, // brand ring on the image too
     display: "block",
+    background: "#0f0f0f",
+  };
+
+  // Account dropdown aligns to the right
+  const accountPanel = {
+    ...dropdownPanel,
+    right: 0,
+    left: "auto",
+    minWidth: 240,
   };
 
   return (
     <header style={headerWrap}>
       <div style={container}>
-        {/* Left: Logo */}
-        <a href="/" style={logoLink} aria-label="Go to home">
-          <img
-            src="/brand/logos/TheUnsignedUnderground-OnBlack.svg"
-            alt="The Unsigned Underground"
-            style={logoImg}
-          />
-        </a>
+        {/* Left: Logo (with right divider) */}
+        <div style={{ ...navItemWrap, ...divider }}>
+          {/* vertical divider rising from bottom */}
+          <span aria-hidden="true" style={dividerLine} />
+          <a href="/" style={logoLink} aria-label="Go to home">
+            <img
+              src="/brand/logos/TheUnsignedUnderground-OnBlack.svg"
+              alt="The Unsigned Underground"
+              style={logoImg}
+            />
+          </a>
+        </div>
 
-        {/* Center: Main Nav */}
+        {/* Center-left: Features / Pricing / FAQ (with internal dividers) */}
         <nav style={navRow}>
-          {/* Features dropdown */}
+          {/* Features (dropdown) */}
           <div
-            style={navItemWrap}
+            style={{ ...navItemWrap, ...divider }}
             onMouseEnter={() => openMenu("features")}
             onMouseLeave={() => scheduleClose("features")}
           >
+            <span aria-hidden="true" style={dividerLine} />
             <button
               type="button"
               aria-haspopup="menu"
@@ -179,8 +235,16 @@ export default function Header() {
                   Artist Manager (Overview)
                 </a>
                 <a
+                  href="/city-showcase"
+                  style={{ ...dropdownItem, ...separatorTop }}
+                  onMouseOver={(e) => applyHover(e.currentTarget)}
+                  onMouseOut={(e) => clearHover(e.currentTarget)}
+                >
+                  City Showcase
+                </a>
+                <a
                   href="/playlists"
-                  style={dropdownItem}
+                  style={{ ...dropdownItem, ...separatorTop }}
                   onMouseOver={(e) => applyHover(e.currentTarget)}
                   onMouseOut={(e) => clearHover(e.currentTarget)}
                 >
@@ -188,26 +252,19 @@ export default function Header() {
                 </a>
                 <a
                   href="/press"
-                  style={dropdownItem}
+                  style={{ ...dropdownItem, ...separatorTop }}
                   onMouseOver={(e) => applyHover(e.currentTarget)}
                   onMouseOut={(e) => clearHover(e.currentTarget)}
                 >
                   PR &amp; Articles
-                </a>
-                <a
-                  href="/city-showcase"
-                  style={dropdownItem}
-                  onMouseOver={(e) => applyHover(e.currentTarget)}
-                  onMouseOut={(e) => clearHover(e.currentTarget)}
-                >
-                  City Showcase
                 </a>
               </div>
             )}
           </div>
 
           {/* Pricing */}
-          <div style={navItemWrap}>
+          <div style={{ ...navItemWrap, ...divider }}>
+            <span aria-hidden="true" style={dividerLine} />
             <a
               href="/pricing"
               style={navLinkBase}
@@ -219,7 +276,8 @@ export default function Header() {
           </div>
 
           {/* FAQ */}
-          <div style={navItemWrap}>
+          <div style={{ ...navItemWrap, ...divider }}>
+            <span aria-hidden="true" style={dividerLine} />
             <a
               href="/faq"
               style={navLinkBase}
@@ -229,22 +287,20 @@ export default function Header() {
               FAQ
             </a>
           </div>
-
-          {/* Dashboard (direct link keeps same look/size) */}
-          <div style={navItemWrap}>
-            <a
-              href="/dashboard"
-              style={navLinkBase}
-              onMouseOver={(e) => applyHover(e.currentTarget)}
-              onMouseOut={(e) => clearHover(e.currentTarget)}
-            >
-              Dashboard
-            </a>
-          </div>
         </nav>
 
-        {/* Right: Auth / Account */}
+        {/* Right: Dashboard + Auth/Profile */}
         <div style={rightWrap}>
+          {/* Dashboard moved to right cluster */}
+          <a
+            href="/dashboard"
+            style={dashboardLink}
+            onMouseOver={(e) => applyHover(e.currentTarget)}
+            onMouseOut={(e) => clearHover(e.currentTarget)}
+          >
+            Dashboard
+          </a>
+
           <SignedOut>
             <SignInButton mode="modal">
               <button
@@ -258,12 +314,12 @@ export default function Header() {
           </SignedOut>
 
           <SignedIn>
-            {/* Custom avatar trigger with dropdown (restoring your older feel) */}
             <div
-              style={{ position: "relative" }}
+              style={{ position: "relative", ...divider }}
               onMouseEnter={() => openMenu("account")}
               onMouseLeave={() => scheduleClose("account")}
             >
+              <span aria-hidden="true" style={dividerLine} />
               <button
                 type="button"
                 style={avatarBtn}
@@ -283,7 +339,7 @@ export default function Header() {
               {openMenuKey === "account" && (
                 <div
                   role="menu"
-                  style={{ ...dropdownPanel, right: 0, left: "auto", minWidth: 220 }}
+                  style={accountPanel}
                   onMouseEnter={() => openMenu("account")}
                   onMouseLeave={() => scheduleClose("account")}
                 >
@@ -297,7 +353,7 @@ export default function Header() {
                   </a>
                   <a
                     href="/orders"
-                    style={dropdownItem}
+                    style={{ ...dropdownItem, ...separatorTop }}
                     onMouseOver={(e) => applyHover(e.currentTarget)}
                     onMouseOut={(e) => clearHover(e.currentTarget)}
                   >
@@ -305,15 +361,16 @@ export default function Header() {
                   </a>
                   <a
                     href="/my-website"
-                    style={dropdownItem}
+                    style={{ ...dropdownItem, ...separatorTop }}
                     onMouseOver={(e) => applyHover(e.currentTarget)}
                     onMouseOut={(e) => clearHover(e.currentTarget)}
                   >
                     My Website
                   </a>
+                  {/* Sign Out styled identically to other items */}
                   <button
                     type="button"
-                    style={{ ...dropdownItem, width: "100%" }}
+                    style={{ ...dropdownItem, ...separatorTop, width: "100%" }}
                     onMouseOver={(e) => applyHover(e.currentTarget)}
                     onMouseOut={(e) => clearHover(e.currentTarget)}
                     onClick={() => clerk.signOut()}

@@ -57,16 +57,20 @@ export default function Header() {
   // so the lines meet the header's red border precisely.
   const withDivider = { position: "relative", paddingLeft: 16, marginLeft: 16 };
 
-  // Tab dividers: connect to bottom border, rise to ~half the header height, thicker (2px)
-  const dividerLine = {
-    position: "absolute",
-    left: 0,
-    bottom: -PADDING_BOTTOM, // extend through bottom padding to the border
-    width: DIVIDER_WIDTH,
-    height: Math.round(HEADER_HEIGHT / 2) + PADDING_BOTTOM,
-    background: colors.outlawRed,
-    opacity: 0.95,
-  };
+  // Tab dividers: connect to bottom border, rise ~70% of header height, thicker (2px)
+const DIVIDER_RATIO = 0.7; // bump to 0.75 if you want even taller
+const dividerLine = {
+  position: "absolute",
+  left: 0,
+  // extend through container padding + cover the 1px header border to visibly touch it
+  bottom: -(PADDING_BOTTOM + 1),
+  width: DIVIDER_WIDTH, // 2
+  // rise from the bottom border up ~70% of the header height,
+  // plus padding + 1px border compensation so the visible segment is taller
+  height: Math.round(HEADER_HEIGHT * DIVIDER_RATIO) + PADDING_BOTTOM + 1,
+  background: colors.outlawRed,
+  opacity: 0.95,
+};
 
   // Logo divider: full height (top border to bottom border)
   const logoDividerLine = {
